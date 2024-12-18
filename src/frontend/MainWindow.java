@@ -2,47 +2,89 @@ package frontend;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 
 public class MainWindow extends JFrame {
     private JPanel mainPanel;
+    private JLabel breadcrumbLabel;
+    private HashMap<String, JPanel> screenMap;
 
     public MainWindow() {
-        setTitle("Cricket Scorecard");
-        setSize(800, 600);
+        setTitle("Cricket Scoreboard");
+        setSize(1250, 760);
+        setLocationRelativeTo(null);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        JMenuBar menuBar = new JMenuBar();
-        JMenu navigateMenu = new JMenu("Navigate");
+        Image backgroundImage = new ImageIcon("src/frontend/images/backgroundImage.jpg").getImage();
+        breadcrumbLabel = new JLabel("Home", SwingConstants.LEFT);
+        breadcrumbLabel.setFont(new Font("Monospaced", Font.BOLD, 18));
+        breadcrumbLabel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        breadcrumbLabel.setOpaque(true);
+        breadcrumbLabel.setBackground(new Color(34, 40, 49));
+        breadcrumbLabel.setForeground(new Color(0, 173, 181));
+        add(breadcrumbLabel, BorderLayout.NORTH);
 
-        JMenuItem teamSetupMenuItem = new JMenuItem("Team Setup");
-        JMenuItem scorecardMenuItem = new JMenuItem("Scorecard");
-        JMenuItem matchSummaryMenuItem = new JMenuItem("Match Summary");
-      
-        teamSetupMenuItem.addActionListener(e -> switchToScreen("Team Setup"));
-        scorecardMenuItem.addActionListener(e -> switchToScreen("Scorecard"));
-        matchSummaryMenuItem.addActionListener(e -> switchToScreen("Match Summary"));
+        JPanel navBarPanel = new JPanel();
+        navBarPanel.setLayout(new BoxLayout(navBarPanel, BoxLayout.X_AXIS));
+        navBarPanel.setBackground(new Color(34, 40, 49));
 
-        navigateMenu.add(teamSetupMenuItem);
-        navigateMenu.add(scorecardMenuItem);
-        navigateMenu.add(matchSummaryMenuItem);
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        buttonPanel.setBackground(new Color(34, 40, 49));
 
-        menuBar.add(navigateMenu);
-        setJMenuBar(menuBar);
+        String[] screens = {"Home", "Team Setup", "Scorecard", "Player Statistics","Match Summary", "Leaderboard", "Commentary"};
+        for (String screen : screens) {
+            JButton navButton = new JButton(screen);
+            navButton.setFont(new Font("Monospaced", Font.BOLD, 16));
+            navButton.setBackground(new Color(57, 62, 70));
+            navButton.setForeground(new Color(238, 238, 238));
+            navButton.setFocusPainted(false);
+            navButton.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+            navButton.addActionListener(e -> switchToScreen(screen));
+            buttonPanel.add(navButton);
+        }
 
-        mainPanel = new JPanel();
-        mainPanel.setLayout(new CardLayout());
+        navBarPanel.add(Box.createHorizontalGlue());
+        navBarPanel.add(buttonPanel);
+        navBarPanel.add(Box.createHorizontalGlue());
+
+        add(navBarPanel, BorderLayout.NORTH);
+
+        mainPanel = new BackgroundPanel(backgroundImage); 
+        mainPanel.setLayout(new CardLayout()); 
         add(mainPanel, BorderLayout.CENTER);
 
-        mainPanel.add(new JLabel("Team Setup Screen"), "Team Setup");
-        mainPanel.add(new JLabel("Scorecard Screen"), "Scorecard");
-        mainPanel.add(new JLabel("Match Summary Screen"), "Match Summary");
+        screenMap = new HashMap<>();
+        registerScreen("Home", new HomeScreen(this, backgroundImage));
+        registerScreen("Team Setup", new TeamSetupGUI(backgroundImage));
+        registerScreen("Scorecard", new ScoreCardGUI(backgroundImage));
+        registerScreen("Player Statistics", new PlayerStatsGUI(backgroundImage));
+        registerScreen("Match Summary", new MatchSummaryGUI(backgroundImage));
+        registerScreen("Leaderboard", new LeaderboardGUI(backgroundImage));
+        registerScreen("Commentary", new CommentaryPanel(backgroundImage));
 
-        switchToScreen("Team Setup");
+        switchToScreen("Home");
     }
 
-    private void switchToScreen(String screenName) {
-        CardLayout layout = (CardLayout) mainPanel.getLayout();
-        layout.show(mainPanel, screenName);
+    private void registerScreen(String screenName, JPanel screen) {
+        screenMap.put(screenName, screen);
+        mainPanel.add(screen, screenName);
     }
+
+    public void switchToScreen(String screenName) {
+        if (screenMap.containsKey(screenName)) {
+            CardLayout layout = (CardLayout) mainPanel.getLayout();
+            layout.show(mainPanel, screenName);
+
+            if ("Home".equals(screenName)) {
+                breadcrumbLabel.setText("Home");
+            } else {
+                breadcrumbLabel.setText("Home > " + screenName);
+            }
+        } else {
+            System.err.println("Screen not found: " + screenName);
+        }
+    }
+
 }
