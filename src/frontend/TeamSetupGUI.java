@@ -20,7 +20,7 @@ public class TeamSetupGUI extends BackgroundPanel {
 
         JPanel teamNamePanel = new JPanel(new GridLayout(2, 2, 20, 20));
         teamNamePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(0, 173, 181)), "Enter Team Names", TitledBorder.LEFT, TitledBorder.TOP, new Font("Monospaced", Font.BOLD, 18), new Color(0, 173, 181)));
-
+        teamNamePanel.setOpaque(false);
         team1Field = new JTextField();
         team1Field.setToolTipText("Enter Team 1 name");
         teamNamePanel.add(new JLabel("Team 1 Name:", SwingConstants.RIGHT));
@@ -34,6 +34,7 @@ public class TeamSetupGUI extends BackgroundPanel {
         add(teamNamePanel, BorderLayout.NORTH);
 
         JPanel playerPanel = new JPanel(new GridLayout(1, 2, 20, 20));
+        playerPanel.setOpaque(false);
         playerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(0, 173, 181)), "Add Players", TitledBorder.LEFT, TitledBorder.TOP, new Font("Monospaced", Font.BOLD, 18), new Color(0, 173, 181)));
 
         team1Table = createPlayerTable("Team 1");
@@ -73,7 +74,7 @@ public class TeamSetupGUI extends BackgroundPanel {
         table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(createRoleDropdown()));
         table.getTableHeader().setReorderingAllowed(false);
         table.getTableHeader().setResizingAllowed(false);
-
+        table.setOpaque(false);
         return table;
     }
 

@@ -12,19 +12,21 @@ public class HomeScreen extends BackgroundPanel {
 
         JLabel welcomeLabel = new JLabel("Welcome to the Cricket Score Card System", SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("Monospaced", Font.BOLD, 24));
-        welcomeLabel.setForeground(new Color(0, 173, 181));
+        welcomeLabel.setForeground(new Color(255, 255, 255));
         add(welcomeLabel, BorderLayout.NORTH);
 
         JPanel imagePanel = new JPanel();
-        imagePanel.setLayout(new GridLayout(1, 6, 15, 15)); 
-        imagePanel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
+        imagePanel.setLayout(new GridLayout(2, 3, 15, 15)); 
+        imagePanel.setBorder(BorderFactory.createEmptyBorder(100, 10, 100, 10));
+        imagePanel.setOpaque(false);
 
-        JButton teamSetupButton = createImageButton("team_setup.png", "Team Setup");
-        JButton scorecardButton = createImageButton("scorecard.png", "Scorecard");
-        JButton playerStatsButton = createImageButton("player_stats.png", "Player Statistics");
-        JButton matchSummaryButton = createImageButton("match_summary.png", "Match Summary");
-        JButton leaderboardButton = createImageButton("leaderboard.png", "Leaderboard");
-        JButton commentaryButton = createImageButton("commentary.png", "Commentary");
+
+        JButton teamSetupButton = createImageButton("Team Setup");
+        JButton scorecardButton = createImageButton("Scorecard");
+        JButton playerStatsButton = createImageButton("Player Statistics");
+        JButton matchSummaryButton = createImageButton("Match Summary");
+        JButton leaderboardButton = createImageButton("Leaderboard");
+        JButton commentaryButton = createImageButton("Commentary");
 
         teamSetupButton.addActionListener(e -> mainWindow.switchToScreen("Team Setup"));
         scorecardButton.addActionListener(e -> mainWindow.switchToScreen("Scorecard"));
@@ -42,24 +44,25 @@ public class HomeScreen extends BackgroundPanel {
 
         add(imagePanel, BorderLayout.CENTER);
 
-        JLabel footerLabel = new JLabel("Navigate to any section using the images above.", SwingConstants.CENTER);
+        JLabel footerLabel = new JLabel("Navigate to any section using the buttons above.", SwingConstants.CENTER);
         footerLabel.setFont(new Font("Monospaced", Font.ITALIC, 14));
-        footerLabel.setForeground(Color.GRAY);
+        footerLabel.setForeground(Color.WHITE);
+        footerLabel.setOpaque(true);
+        footerLabel.setBackground(new Color(255, 255, 255));
         add(footerLabel, BorderLayout.SOUTH);
     }
 
-    private JButton createImageButton(String imagePath, String altText) {
-        ImageIcon icon = new ImageIcon(imagePath);
-        JButton button = new JButton(icon);
+    private JButton createImageButton(String altText) {
+        JButton button = new JButton();
         button.setToolTipText(altText);
         button.setFocusPainted(false);
-        button.setBackground(Color.WHITE);
-        button.setBorder(BorderFactory.createEmptyBorder());
+        button.setContentAreaFilled(false);
+        button.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255), 1));
         button.setHorizontalTextPosition(SwingConstants.CENTER);
         button.setVerticalTextPosition(SwingConstants.BOTTOM);
-        button.setFont(new Font("Monospaced", Font.BOLD, 16));
+        button.setFont(new Font("Monospaced", Font.BOLD, 20));
         button.setText(altText);
-        button.setForeground(new Color(0, 173, 181)); 
+        button.setForeground(new Color(255, 255, 255)); 
         return button;
     }
 }

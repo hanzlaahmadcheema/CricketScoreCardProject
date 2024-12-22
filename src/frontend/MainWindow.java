@@ -23,7 +23,7 @@ public class MainWindow extends JFrame {
         breadcrumbLabel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         breadcrumbLabel.setOpaque(true);
         breadcrumbLabel.setBackground(new Color(34, 40, 49));
-        breadcrumbLabel.setForeground(new Color(0, 173, 181));
+        breadcrumbLabel.setForeground(new Color(255, 255, 255));
         add(breadcrumbLabel, BorderLayout.NORTH);
 
         JPanel navBarPanel = new JPanel();
