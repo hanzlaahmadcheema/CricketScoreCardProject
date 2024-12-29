@@ -17,7 +17,7 @@ public class LeaderboardGUI extends BackgroundPanel {
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JLabel titleLabel = new JLabel("Leaderboard and Records", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Garamond", Font.BOLD, 24));
+        titleLabel.setFont(new Font("Calibri", Font.BOLD, 24));
         titleLabel.setForeground(new Color(0, 102, 204)); 
         add(titleLabel, BorderLayout.NORTH);
 
@@ -26,10 +26,10 @@ public class LeaderboardGUI extends BackgroundPanel {
         leaderboardTable = new JTable(tableModel);
         leaderboardTable.setRowHeight(25);
         leaderboardTable.getTableHeader().setReorderingAllowed(false);
-        leaderboardTable.setFont(new Font("Garamond", Font.PLAIN, 16));
-        leaderboardTable.getTableHeader().setFont(new Font("Garamond", Font.BOLD, 16));
+        leaderboardTable.setFont(new Font("Calibri", Font.PLAIN, 16));
+        leaderboardTable.getTableHeader().setFont(new Font("Calibri", Font.BOLD, 16));
         JScrollPane tableScrollPane = new JScrollPane(leaderboardTable);
-        tableScrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(0, 102, 204)), "Leaderboard", TitledBorder.LEFT, TitledBorder.TOP, new Font("Garamond", Font.BOLD, 18), new Color(0, 102, 204)));
+        tableScrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(0, 102, 204)), "Leaderboard", TitledBorder.LEFT, TitledBorder.TOP, new Font("Calibri", Font.BOLD, 18), new Color(0, 102, 204)));
         add(tableScrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
@@ -48,7 +48,7 @@ public class LeaderboardGUI extends BackgroundPanel {
     }
 
     private void styleButton(JButton button) {
-        button.setFont(new Font("Garamond", Font.BOLD, 16));
+        button.setFont(new Font("Calibri", Font.BOLD, 16));
         button.setBackground(new Color(0, 173, 181));
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);

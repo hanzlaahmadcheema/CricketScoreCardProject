@@ -8,6 +8,13 @@ public class MainWindow extends JFrame {
     private JPanel mainPanel;
     private HashMap<String, JPanel> screenMap;
 
+    BackgroundPanel bp = new BackgroundPanel(null);
+
+    Color primaryBackgroundColor = bp.primaryBackgroundColor;
+    Color secondaryBackgroundColor = bp.secondaryBackgroundColor;
+    Color foregroundColor = bp.foregroundColor;
+    Color redColor = bp.redColor;
+
     public MainWindow() {
         setTitle("Cricket Scoreboard");
         setSize(1250, 760);
@@ -17,53 +24,52 @@ public class MainWindow extends JFrame {
         setLayout(new BorderLayout());
         setUndecorated(true);
 
-
         Image backgroundImage = new ImageIcon("src/frontend/images/backgroundImage.png").getImage();
      
         JPanel navBarPanel = new JPanel();
         navBarPanel.setLayout(new BoxLayout(navBarPanel, BoxLayout.X_AXIS));
-        navBarPanel.setBackground(new Color(34, 40, 49));
+        navBarPanel.setBackground(primaryBackgroundColor);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        buttonPanel.setBackground(new Color(34, 40, 49));
+        buttonPanel.setBackground(primaryBackgroundColor);
 
         String[] screens = {"Home", "Team Setup", "Scorecard", "Player Statistics","Match Summary", "Leaderboard", "Commentary"};
         for (String screen : screens) {
             JButton navButton = new JButton(screen);
-            navButton.setFont(new Font("Garamond", Font.BOLD, 16));
-            navButton.setBackground(new Color(57, 62, 70));
-            navButton.setForeground(new Color(238, 238, 238));
+            navButton.setFont(new Font("Calibri", Font.BOLD, 16));
+            navButton.setBackground(secondaryBackgroundColor);
+            navButton.setForeground(foregroundColor);
             navButton.setFocusPainted(false);
             navButton.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
             navButton.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseEntered(java.awt.event.MouseEvent evt) {
-                    navButton.setBackground(new Color(34, 40, 49));
-                    navButton.setForeground(new Color(255, 255, 255));
+                    navButton.setBackground(primaryBackgroundColor);
+                    navButton.setForeground(foregroundColor);
                 }
     
                 public void mouseExited(java.awt.event.MouseEvent evt) {
-                    navButton.setBackground(new Color(57, 62, 70));
-                    navButton.setForeground(new Color(255, 255, 255));
+                    navButton.setBackground(secondaryBackgroundColor);
+                    navButton.setForeground(foregroundColor);
                 }
             });
             navButton.addActionListener(e -> switchToScreen(screen));
             buttonPanel.add(navButton);
         }
         JButton closeButton = new JButton("X");
-        closeButton.setFont(new Font("Garamond", Font.BOLD, 16));
-        closeButton.setBackground(new Color(57, 62, 70));
-        closeButton.setForeground(Color.RED);
+        closeButton.setFont(new Font("Calibri", Font.BOLD, 16));
+        closeButton.setBackground(secondaryBackgroundColor);
+        closeButton.setForeground(redColor);
         closeButton.setFocusPainted(false);
         closeButton.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
         closeButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                closeButton.setBackground(Color.RED);
-                closeButton.setForeground(new Color(255, 255, 255));
+                closeButton.setBackground(redColor);
+                closeButton.setForeground(foregroundColor);
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                closeButton.setBackground(new Color(57, 62, 70));
-                closeButton.setForeground(Color.RED);
+                closeButton.setBackground(secondaryBackgroundColor);
+                closeButton.setForeground(redColor);
             }
         });
         closeButton.addActionListener(e -> System.exit(0));
@@ -92,7 +98,7 @@ public class MainWindow extends JFrame {
         registerScreen("Leaderboard", new LeaderboardGUI(backgroundImage));
         registerScreen("Commentary", new CommentaryPanel(backgroundImage));
 
-        switchToScreen("Scorecard");
+        switchToScreen("Match Summary");
     }
 
     private void registerScreen(String screenName, JPanel screen) {

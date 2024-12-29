@@ -3,22 +3,22 @@ package frontend;
 import javax.swing.*;
 import java.awt.*;
 
-public class HomeScreen extends BackgroundPanel {
-
+public class HomeScreen extends BackgroundPanel {    
+    
     public HomeScreen(MainWindow mainWindow, Image backgroundImage) {
         super(backgroundImage);
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(50, 20, 20, 20));
 
         JLabel welcomeLabel = new JLabel("Cricket Score Card System", SwingConstants.CENTER);
-        welcomeLabel.setFont(new Font("Garamond", Font.BOLD, 24));
-        welcomeLabel.setForeground(new Color(255, 255, 255));
+        welcomeLabel.setFont(new Font("Calibri", Font.BOLD, 24));
+        welcomeLabel.setForeground(foregroundColor);
         add(welcomeLabel, BorderLayout.NORTH);
 
         JPanel imagePanel = new JPanel();
         imagePanel.setLayout(new GridLayout(2, 3, 100, 50)); 
         imagePanel.setBorder(BorderFactory.createEmptyBorder(150, 100, 150, 100));
-        imagePanel.setBackground(new Color(255, 255, 255, 50));
+        imagePanel.setBackground(backgroundColor);
 
 
         JButton teamSetupButton = createImageButton("Team Setup");
@@ -45,8 +45,8 @@ public class HomeScreen extends BackgroundPanel {
         add(imagePanel, BorderLayout.CENTER);
 
         JLabel footerLabel = new JLabel("Navigate to any section using the buttons above.", SwingConstants.CENTER);
-        footerLabel.setFont(new Font("Garamond", Font.BOLD, 18));
-        footerLabel.setForeground(Color.WHITE);
+        footerLabel.setFont(new Font("Calibri", Font.BOLD, 18));
+        footerLabel.setForeground(foregroundColor);
         add(footerLabel, BorderLayout.SOUTH);
     }
 
@@ -54,23 +54,23 @@ public class HomeScreen extends BackgroundPanel {
         JButton button = new JButton();
         button.setToolTipText(altText);
         button.setFocusPainted(false);
-        button.setBackground(new Color(57, 62, 70));
-        button.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+        button.setBackground(secondaryBackgroundColor);
+        button.setBorder(BorderFactory.createLineBorder(foregroundColor, 1));
         button.setHorizontalTextPosition(SwingConstants.CENTER);
         button.setVerticalTextPosition(SwingConstants.BOTTOM);
-        button.setFont(new Font("Garamond", Font.BOLD, 20));
+        button.setFont(new Font("Calibri", Font.BOLD, 20));
         button.setText(altText);
-        button.setForeground(Color.WHITE); 
+        button.setForeground(foregroundColor); 
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                button.setBackground(new Color(40, 46, 55));
-                button.setForeground(new Color(255, 255, 255));
+                button.setBackground(hoverBackgroundColor);
+                button.setForeground(foregroundColor);
                 
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                button.setBackground(new Color(57, 62, 70));
-                button.setForeground(new Color(255, 255, 255));
+                button.setBackground(secondaryBackgroundColor);
+                button.setForeground(foregroundColor);
             }
         });
         return button;

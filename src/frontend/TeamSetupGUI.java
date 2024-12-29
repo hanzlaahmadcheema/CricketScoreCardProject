@@ -2,6 +2,7 @@ package frontend;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
@@ -22,18 +23,18 @@ public class TeamSetupGUI extends BackgroundPanel {
 
         JPanel teamNamePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 10));
         teamNamePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        teamNamePanel.setBackground(new Color(255, 255, 255, 50));
+        teamNamePanel.setBackground(new Color(0, 0, 0, 50));
         
         team1Field = new JTextField(20); 
         team1Field.setToolTipText("Enter Team 1 name");
-        team1Field.setFont(new Font("Garamond", Font.PLAIN, 16));
+        team1Field.setFont(new Font("Calibri", Font.PLAIN, 16));
         team1Field.setBackground(new Color(57, 62, 70));
         team1Field.setForeground(Color.WHITE);
         team1Field.setCaretColor(Color.WHITE);
         team1Field.setHorizontalAlignment(SwingConstants.LEFT);
         
         JLabel team1NameLabel = new JLabel("Team 1 Name:", SwingConstants.LEFT);
-        team1NameLabel.setFont(new Font("Garamond", Font.BOLD, 16));
+        team1NameLabel.setFont(new Font("Calibri", Font.BOLD, 16));
         team1NameLabel.setForeground(Color.WHITE);
         
         teamNamePanel.add(team1NameLabel);
@@ -43,14 +44,14 @@ public class TeamSetupGUI extends BackgroundPanel {
 
         team2Field = new JTextField(20);
         team2Field.setToolTipText("Enter Team 2 name");
-        team2Field.setFont(new Font("Garamond", Font.PLAIN, 16));
+        team2Field.setFont(new Font("Calibri", Font.PLAIN, 16));
         team2Field.setBackground(new Color(57, 62, 70));
         team2Field.setForeground(Color.WHITE);
         team2Field.setCaretColor(Color.WHITE);
         team2Field.setHorizontalAlignment(SwingConstants.LEFT);
 
         JLabel team2NameLabel = new JLabel("Team 2 Name:", SwingConstants.LEFT);
-        team2NameLabel.setFont(new Font("Garamond", Font.BOLD, 16));
+        team2NameLabel.setFont(new Font("Calibri", Font.BOLD, 16));
         team2NameLabel.setForeground(Color.WHITE);
 
         teamNamePanel.add(team2NameLabel);
@@ -59,8 +60,8 @@ public class TeamSetupGUI extends BackgroundPanel {
         add(teamNamePanel, BorderLayout.NORTH);
 
         JPanel playerPanel = new JPanel(new GridLayout(1, 2, 20, 20));
-        playerPanel.setBackground(new Color(255, 255, 255, 50));
-        playerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(0,0,0,0)), "Add Players", TitledBorder.CENTER, TitledBorder.TOP, new Font("Garamond", Font.BOLD, 24), Color.WHITE));
+        playerPanel.setBackground(new Color(0, 0, 0, 50));
+        playerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(0,0,0,0)), "Add Players", TitledBorder.CENTER, TitledBorder.TOP, new Font("Calibri", Font.BOLD, 24), Color.WHITE));
 
         team1Table = createPlayerTable("Team 1");
         JScrollPane team1ScrollPane = new JScrollPane(team1Table);
@@ -79,7 +80,7 @@ public class TeamSetupGUI extends BackgroundPanel {
         add(playerPanel, BorderLayout.CENTER);
 
         JButton submitButton = new JButton("Submit Teams");
-        submitButton.setFont(new Font("Garamond", Font.BOLD, 18));
+        submitButton.setFont(new Font("Calibri", Font.BOLD, 18));
         submitButton.setBackground(new Color(34, 40, 49)); 
         submitButton.setForeground(Color.WHITE);
         submitButton.setFocusPainted(false);
@@ -106,7 +107,7 @@ public class TeamSetupGUI extends BackgroundPanel {
         };
 
         JTable table = new JTable(tableModel);
-        table.setFont(new Font("Garamond", Font.PLAIN, 14));
+        table.setFont(new Font("Calibri", Font.PLAIN, 14));
         table.setBackground(new Color(57, 62, 70));
         table.setForeground(Color.WHITE);
         table.setGridColor(Color.BLACK);
@@ -120,11 +121,17 @@ public class TeamSetupGUI extends BackgroundPanel {
         table.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255), 1));
         table.setSelectionBackground(new Color(34, 40, 49));
         table.setSelectionForeground(Color.WHITE);
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
 
         JTableHeader tableHeader = table.getTableHeader(); 
         tableHeader.setBackground(new Color(34, 40, 49));
         tableHeader.setForeground(new Color(192, 192, 192));
-        tableHeader.setFont(new Font("Garamond", Font.BOLD, 16));
+        tableHeader.setFont(new Font("Calibri", Font.BOLD, 16));
         tableHeader.setOpaque(false);
 
 
