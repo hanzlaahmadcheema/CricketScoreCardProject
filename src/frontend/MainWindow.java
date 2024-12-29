@@ -18,12 +18,8 @@ public class MainWindow extends JFrame {
         setUndecorated(true);
 
 
-        Image backgroundImage = new ImageIcon("src/frontend/images/backgroundImage.jpg").getImage();
-        //list of fonts
-        String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
-        for (String font : fonts) {
-            System.out.println(font);
-        }
+        Image backgroundImage = new ImageIcon("src/frontend/images/backgroundImage.png").getImage();
+     
         JPanel navBarPanel = new JPanel();
         navBarPanel.setLayout(new BoxLayout(navBarPanel, BoxLayout.X_AXIS));
         navBarPanel.setBackground(new Color(34, 40, 49));
@@ -39,6 +35,17 @@ public class MainWindow extends JFrame {
             navButton.setForeground(new Color(238, 238, 238));
             navButton.setFocusPainted(false);
             navButton.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+            navButton.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    navButton.setBackground(new Color(34, 40, 49));
+                    navButton.setForeground(new Color(255, 255, 255));
+                }
+    
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    navButton.setBackground(new Color(57, 62, 70));
+                    navButton.setForeground(new Color(255, 255, 255));
+                }
+            });
             navButton.addActionListener(e -> switchToScreen(screen));
             buttonPanel.add(navButton);
         }

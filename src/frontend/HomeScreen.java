@@ -8,7 +8,7 @@ public class HomeScreen extends BackgroundPanel {
     public HomeScreen(MainWindow mainWindow, Image backgroundImage) {
         super(backgroundImage);
         setLayout(new BorderLayout(10, 10));
-        setBorder(BorderFactory.createEmptyBorder(100, 20, 20, 20));
+        setBorder(BorderFactory.createEmptyBorder(50, 20, 20, 20));
 
         JLabel welcomeLabel = new JLabel("Cricket Score Card System", SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("Garamond", Font.BOLD, 24));
@@ -16,9 +16,9 @@ public class HomeScreen extends BackgroundPanel {
         add(welcomeLabel, BorderLayout.NORTH);
 
         JPanel imagePanel = new JPanel();
-        imagePanel.setLayout(new GridLayout(2, 3, 50, 50)); 
-        imagePanel.setBorder(BorderFactory.createEmptyBorder(100, 100, 150, 100));
-        imagePanel.setOpaque(false);
+        imagePanel.setLayout(new GridLayout(2, 3, 100, 50)); 
+        imagePanel.setBorder(BorderFactory.createEmptyBorder(150, 100, 150, 100));
+        imagePanel.setBackground(new Color(57, 62, 70, 100));
 
 
         JButton teamSetupButton = createImageButton("Team Setup");
@@ -55,12 +55,12 @@ public class HomeScreen extends BackgroundPanel {
         button.setToolTipText(altText);
         button.setFocusPainted(false);
         button.setBackground(new Color(57, 62, 70));
-        button.setBorder(BorderFactory.createLineBorder(new Color(196, 192, 192), 1));
+        button.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         button.setHorizontalTextPosition(SwingConstants.CENTER);
         button.setVerticalTextPosition(SwingConstants.BOTTOM);
         button.setFont(new Font("Garamond", Font.BOLD, 20));
         button.setText(altText);
-        button.setForeground(new Color(255, 255, 255)); 
+        button.setForeground(Color.WHITE); 
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(new Color(40, 46, 55));
