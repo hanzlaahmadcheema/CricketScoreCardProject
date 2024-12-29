@@ -92,7 +92,7 @@ public class MainWindow extends JFrame {
         registerScreen("Leaderboard", new LeaderboardGUI(backgroundImage));
         registerScreen("Commentary", new CommentaryPanel(backgroundImage));
 
-        switchToScreen("Home");
+        switchToScreen("Team Setup");
     }
 
     private void registerScreen(String screenName, JPanel screen) {

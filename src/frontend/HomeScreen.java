@@ -18,7 +18,7 @@ public class HomeScreen extends BackgroundPanel {
         JPanel imagePanel = new JPanel();
         imagePanel.setLayout(new GridLayout(2, 3, 100, 50)); 
         imagePanel.setBorder(BorderFactory.createEmptyBorder(150, 100, 150, 100));
-        imagePanel.setBackground(new Color(57, 62, 70, 100));
+        imagePanel.setBackground(new Color(255, 255, 255, 50));
 
 
         JButton teamSetupButton = createImageButton("Team Setup");
