@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 public class MainWindow extends JFrame {
     private JPanel mainPanel;
-    private JLabel breadcrumbLabel;
     private HashMap<String, JPanel> screenMap;
 
     public MainWindow() {
@@ -16,16 +15,15 @@ public class MainWindow extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
+        setUndecorated(true);
+
 
         Image backgroundImage = new ImageIcon("src/frontend/images/backgroundImage.jpg").getImage();
-        breadcrumbLabel = new JLabel("Home", SwingConstants.LEFT);
-        breadcrumbLabel.setFont(new Font("Monospaced", Font.BOLD, 18));
-        breadcrumbLabel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        breadcrumbLabel.setOpaque(true);
-        breadcrumbLabel.setBackground(new Color(34, 40, 49));
-        breadcrumbLabel.setForeground(new Color(255, 255, 255));
-        add(breadcrumbLabel, BorderLayout.NORTH);
-
+        //list of fonts
+        String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+        for (String font : fonts) {
+            System.out.println(font);
+        }
         JPanel navBarPanel = new JPanel();
         navBarPanel.setLayout(new BoxLayout(navBarPanel, BoxLayout.X_AXIS));
         navBarPanel.setBackground(new Color(34, 40, 49));
@@ -36,7 +34,7 @@ public class MainWindow extends JFrame {
         String[] screens = {"Home", "Team Setup", "Scorecard", "Player Statistics","Match Summary", "Leaderboard", "Commentary"};
         for (String screen : screens) {
             JButton navButton = new JButton(screen);
-            navButton.setFont(new Font("Monospaced", Font.BOLD, 16));
+            navButton.setFont(new Font("Garamond", Font.BOLD, 16));
             navButton.setBackground(new Color(57, 62, 70));
             navButton.setForeground(new Color(238, 238, 238));
             navButton.setFocusPainted(false);
@@ -76,12 +74,6 @@ public class MainWindow extends JFrame {
         if (screenMap.containsKey(screenName)) {
             CardLayout layout = (CardLayout) mainPanel.getLayout();
             layout.show(mainPanel, screenName);
-
-            if ("Home".equals(screenName)) {
-                breadcrumbLabel.setText("Home");
-            } else {
-                breadcrumbLabel.setText("Home > " + screenName);
-            }
         } else {
             System.err.println("Screen not found: " + screenName);
         }

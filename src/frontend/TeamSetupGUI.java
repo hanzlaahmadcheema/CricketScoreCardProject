@@ -19,7 +19,7 @@ public class TeamSetupGUI extends BackgroundPanel {
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); 
 
         JPanel teamNamePanel = new JPanel(new GridLayout(2, 2, 20, 20));
-        teamNamePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(0, 173, 181)), "Enter Team Names", TitledBorder.LEFT, TitledBorder.TOP, new Font("Monospaced", Font.BOLD, 18), new Color(0, 173, 181)));
+        teamNamePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(0, 173, 181)), "Enter Team Names", TitledBorder.LEFT, TitledBorder.TOP, new Font("Garamond", Font.BOLD, 18), new Color(0, 173, 181)));
         teamNamePanel.setOpaque(false);
         team1Field = new JTextField();
         team1Field.setToolTipText("Enter Team 1 name");
@@ -35,7 +35,7 @@ public class TeamSetupGUI extends BackgroundPanel {
 
         JPanel playerPanel = new JPanel(new GridLayout(1, 2, 20, 20));
         playerPanel.setOpaque(false);
-        playerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(0, 173, 181)), "Add Players", TitledBorder.LEFT, TitledBorder.TOP, new Font("Monospaced", Font.BOLD, 18), new Color(0, 173, 181)));
+        playerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(0, 173, 181)), "Add Players", TitledBorder.LEFT, TitledBorder.TOP, new Font("Garamond", Font.BOLD, 18), new Color(0, 173, 181)));
 
         team1Table = createPlayerTable("Team 1");
         JScrollPane team1ScrollPane = new JScrollPane(team1Table);
@@ -50,7 +50,7 @@ public class TeamSetupGUI extends BackgroundPanel {
         add(playerPanel, BorderLayout.CENTER);
 
         JButton submitButton = new JButton("Submit Teams");
-        submitButton.setFont(new Font("Monospaced", Font.BOLD, 18));
+        submitButton.setFont(new Font("Garamond", Font.BOLD, 18));
         submitButton.setBackground(new Color(0, 173, 181)); 
         submitButton.setForeground(Color.WHITE);
         submitButton.setFocusPainted(false);
@@ -69,7 +69,7 @@ public class TeamSetupGUI extends BackgroundPanel {
         };
 
         JTable table = new JTable(tableModel);
-        table.setFont(new Font("Monospaced", Font.PLAIN, 14));
+        table.setFont(new Font("Garamond", Font.PLAIN, 14));
         table.setRowHeight(25);
         table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(createRoleDropdown()));
         table.getTableHeader().setReorderingAllowed(false);

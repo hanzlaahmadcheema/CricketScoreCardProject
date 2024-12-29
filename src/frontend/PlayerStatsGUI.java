@@ -17,26 +17,26 @@ public class PlayerStatsGUI extends BackgroundPanel {
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); 
 
         JLabel titleLabel = new JLabel("Player Stats", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Monospaced", Font.BOLD, 24));
+        titleLabel.setFont(new Font("Garamond", Font.BOLD, 24));
         titleLabel.setForeground(new Color(0, 102, 204));
         add(titleLabel, BorderLayout.NORTH);
 
         playerStatsModel = createPlayerStatsModel();
         playerStatsTable = createNonEditableTable(playerStatsModel);
         JScrollPane playerScrollPane = new JScrollPane(playerStatsTable);
-        playerScrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(0, 102, 204)), "Player Statistics", TitledBorder.LEFT, TitledBorder.TOP, new Font("Monospaced", Font.BOLD, 18), new Color(0, 102, 204)));
+        playerScrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(0, 102, 204)), "Player Statistics", TitledBorder.LEFT, TitledBorder.TOP, new Font("Garamond", Font.BOLD, 18), new Color(0, 102, 204)));
         add(playerScrollPane, BorderLayout.CENTER);
 
         JPanel partnershipPanel = new JPanel(new BorderLayout(20, 20));
         JLabel partnershipLabel = new JLabel("Partnership Tracking", SwingConstants.CENTER);
-        partnershipLabel.setFont(new Font("Monospaced", Font.BOLD, 20));
+        partnershipLabel.setFont(new Font("Garamond", Font.BOLD, 20));
         partnershipLabel.setForeground(new Color(0, 102, 204));
         partnershipPanel.add(partnershipLabel, BorderLayout.NORTH);
 
         partnershipModel = createPartnershipModel();
         partnershipTable = createNonEditableTable(partnershipModel);
         JScrollPane partnershipScrollPane = new JScrollPane(partnershipTable);
-        partnershipScrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(0, 102, 204)), "Partnerships", TitledBorder.LEFT, TitledBorder.TOP, new Font("Monospaced", Font.BOLD, 18), new Color(0, 102, 204)));
+        partnershipScrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(0, 102, 204)), "Partnerships", TitledBorder.LEFT, TitledBorder.TOP, new Font("Garamond", Font.BOLD, 18), new Color(0, 102, 204)));
         partnershipPanel.add(partnershipScrollPane, BorderLayout.CENTER);
 
         add(partnershipPanel, BorderLayout.SOUTH);
@@ -69,7 +69,7 @@ public class PlayerStatsGUI extends BackgroundPanel {
                 return false;
             }
         };
-        table.setFont(new Font("Monospaced", Font.PLAIN, 16));
+        table.setFont(new Font("Garamond", Font.PLAIN, 16));
         table.setRowHeight(25);
         table.getTableHeader().setReorderingAllowed(false);
         table.getTableHeader().setResizingAllowed(false);

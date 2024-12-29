@@ -8,16 +8,16 @@ public class HomeScreen extends BackgroundPanel {
     public HomeScreen(MainWindow mainWindow, Image backgroundImage) {
         super(backgroundImage);
         setLayout(new BorderLayout(10, 10));
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        setBorder(BorderFactory.createEmptyBorder(100, 20, 20, 20));
 
-        JLabel welcomeLabel = new JLabel("Welcome to the Cricket Score Card System", SwingConstants.CENTER);
-        welcomeLabel.setFont(new Font("Monospaced", Font.BOLD, 24));
+        JLabel welcomeLabel = new JLabel("Cricket Score Card System", SwingConstants.CENTER);
+        welcomeLabel.setFont(new Font("Garamond", Font.BOLD, 24));
         welcomeLabel.setForeground(new Color(255, 255, 255));
         add(welcomeLabel, BorderLayout.NORTH);
 
         JPanel imagePanel = new JPanel();
-        imagePanel.setLayout(new GridLayout(2, 3, 15, 15)); 
-        imagePanel.setBorder(BorderFactory.createEmptyBorder(100, 10, 100, 10));
+        imagePanel.setLayout(new GridLayout(2, 3, 50, 50)); 
+        imagePanel.setBorder(BorderFactory.createEmptyBorder(100, 100, 150, 100));
         imagePanel.setOpaque(false);
 
 
@@ -45,10 +45,8 @@ public class HomeScreen extends BackgroundPanel {
         add(imagePanel, BorderLayout.CENTER);
 
         JLabel footerLabel = new JLabel("Navigate to any section using the buttons above.", SwingConstants.CENTER);
-        footerLabel.setFont(new Font("Monospaced", Font.ITALIC, 14));
+        footerLabel.setFont(new Font("Garamond", Font.BOLD, 18));
         footerLabel.setForeground(Color.WHITE);
-        footerLabel.setOpaque(true);
-        footerLabel.setBackground(new Color(255, 255, 255));
         add(footerLabel, BorderLayout.SOUTH);
     }
 
@@ -56,13 +54,25 @@ public class HomeScreen extends BackgroundPanel {
         JButton button = new JButton();
         button.setToolTipText(altText);
         button.setFocusPainted(false);
-        button.setContentAreaFilled(false);
-        button.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255), 1));
+        button.setBackground(new Color(57, 62, 70));
+        button.setBorder(BorderFactory.createLineBorder(new Color(196, 192, 192), 1));
         button.setHorizontalTextPosition(SwingConstants.CENTER);
         button.setVerticalTextPosition(SwingConstants.BOTTOM);
-        button.setFont(new Font("Monospaced", Font.BOLD, 20));
+        button.setFont(new Font("Garamond", Font.BOLD, 20));
         button.setText(altText);
         button.setForeground(new Color(255, 255, 255)); 
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(40, 46, 55));
+                button.setForeground(new Color(255, 255, 255));
+                
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(57, 62, 70));
+                button.setForeground(new Color(255, 255, 255));
+            }
+        });
         return button;
     }
 }

@@ -30,9 +30,9 @@ public class ScoreCardGUI extends BackgroundPanel {
         runRateLabel = new JLabel("Run Rate: 0.00", SwingConstants.CENTER);
         projectedScoreLabel = new JLabel("Projected Score: 0", SwingConstants.CENTER);
 
-        scoreLabel.setFont(new Font("Monospaced", Font.BOLD, 24));
-        runRateLabel.setFont(new Font("Monospaced", Font.PLAIN, 18));
-        projectedScoreLabel.setFont(new Font("Monospaced", Font.PLAIN, 18));
+        scoreLabel.setFont(new Font("Garamond", Font.BOLD, 24));
+        runRateLabel.setFont(new Font("Garamond", Font.PLAIN, 18));
+        projectedScoreLabel.setFont(new Font("Garamond", Font.PLAIN, 18));
 
         topPanel.add(scoreLabel);
         topPanel.add(runRateLabel);
@@ -43,17 +43,17 @@ public class ScoreCardGUI extends BackgroundPanel {
 
         scoreTable = createScoreTable();
         JScrollPane scoreScrollPane = new JScrollPane(scoreTable);
-        scoreScrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Batting Team Stats", TitledBorder.LEFT, TitledBorder.TOP, new Font("Monospaced", Font.BOLD, 18), Color.BLACK));
+        scoreScrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Batting Team Stats", TitledBorder.LEFT, TitledBorder.TOP, new Font("Garamond", Font.BOLD, 18), Color.BLACK));
         centerPanel.add(scoreScrollPane);
 
         bowlerTable = createBowlerTable();
         JScrollPane bowlerScrollPane = new JScrollPane(bowlerTable);
-        bowlerScrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Bowling Team Stats", TitledBorder.LEFT, TitledBorder.TOP, new Font("Monospaced", Font.BOLD, 18), Color.BLACK));
+        bowlerScrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Bowling Team Stats", TitledBorder.LEFT, TitledBorder.TOP, new Font("Garamond", Font.BOLD, 18), Color.BLACK));
         centerPanel.add(bowlerScrollPane);
 
         overTable = createOverTable();
         JScrollPane overScrollPane = new JScrollPane(overTable);
-        overScrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Over Summary", TitledBorder.LEFT, TitledBorder.TOP, new Font("Monospaced", Font.BOLD, 18), Color.BLACK));
+        overScrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Over Summary", TitledBorder.LEFT, TitledBorder.TOP, new Font("Garamond", Font.BOLD, 18), Color.BLACK));
         centerPanel.add(overScrollPane);
 
         add(centerPanel, BorderLayout.CENTER);
@@ -79,7 +79,7 @@ public class ScoreCardGUI extends BackgroundPanel {
     }
 
     private void styleButton(JButton button) {
-        button.setFont(new Font("Monospaced", Font.BOLD, 16));
+        button.setFont(new Font("Garamond", Font.BOLD, 16));
         button.setBackground(new Color(0, 173, 181));
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
@@ -109,7 +109,7 @@ public class ScoreCardGUI extends BackgroundPanel {
 
     private JTable createNonEditableTable(DefaultTableModel model) {
         JTable table = new JTable(model);
-        table.setFont(new Font("Monospaced", Font.PLAIN, 14));
+        table.setFont(new Font("Garamond", Font.PLAIN, 14));
         table.setRowHeight(25);
         table.getTableHeader().setReorderingAllowed(false);
         table.getTableHeader().setResizingAllowed(false);
