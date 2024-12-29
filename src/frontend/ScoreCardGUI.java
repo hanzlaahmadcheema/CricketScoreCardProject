@@ -17,7 +17,7 @@ public class ScoreCardGUI extends BackgroundPanel {
     private int totalWickets = 0;
     private int totalOvers = 0;
     private int ballsBowled = 0;
-    private static final int TOTAL_OVERS_IN_MATCH = 20;
+    private static final int TOTAL_OVERS_IN_MATCH = 10;
     private static final int MAX_WICKETS = 10;
 
     public ScoreCardGUI(Image backgroundImage) {
@@ -29,10 +29,14 @@ public class ScoreCardGUI extends BackgroundPanel {
         scoreLabel = new JLabel("Score: 0/0 (0.0 Overs)", SwingConstants.CENTER);
         runRateLabel = new JLabel("Run Rate: 0.00", SwingConstants.CENTER);
         projectedScoreLabel = new JLabel("Projected Score: 0", SwingConstants.CENTER);
+        topPanel.setOpaque(false);
 
         scoreLabel.setFont(new Font("Garamond", Font.BOLD, 24));
+        scoreLabel.setForeground(new Color(255, 255, 255));
         runRateLabel.setFont(new Font("Garamond", Font.PLAIN, 18));
+        runRateLabel.setForeground(new Color(255, 255, 255));
         projectedScoreLabel.setFont(new Font("Garamond", Font.PLAIN, 18));
+        projectedScoreLabel.setForeground(new Color(255, 255, 255));
 
         topPanel.add(scoreLabel);
         topPanel.add(runRateLabel);
@@ -40,25 +44,32 @@ public class ScoreCardGUI extends BackgroundPanel {
         add(topPanel, BorderLayout.NORTH);
 
         JPanel centerPanel = new JPanel(new GridLayout(1, 3, 20, 20));
-
+        centerPanel.setBackground(new Color(255, 255, 255, 50));
         scoreTable = createScoreTable();
         JScrollPane scoreScrollPane = new JScrollPane(scoreTable);
-        scoreScrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Batting Team Stats", TitledBorder.LEFT, TitledBorder.TOP, new Font("Garamond", Font.BOLD, 18), Color.BLACK));
+        scoreScrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(0,0,0,0)), "Batting Team Stats", TitledBorder.CENTER, TitledBorder.TOP, new Font("Garamond", Font.BOLD, 18), Color.WHITE));
+        scoreScrollPane.setOpaque(false);
+        scoreScrollPane.getViewport().setOpaque(false);
         centerPanel.add(scoreScrollPane);
 
         bowlerTable = createBowlerTable();
         JScrollPane bowlerScrollPane = new JScrollPane(bowlerTable);
-        bowlerScrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Bowling Team Stats", TitledBorder.LEFT, TitledBorder.TOP, new Font("Garamond", Font.BOLD, 18), Color.BLACK));
+        bowlerScrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(0,0,0,0)), "Bowling Team Stats", TitledBorder.CENTER, TitledBorder.TOP, new Font("Garamond", Font.BOLD, 18), Color.WHITE));
+        bowlerScrollPane.setOpaque(false);
+        bowlerScrollPane.getViewport().setOpaque(false);
         centerPanel.add(bowlerScrollPane);
 
         overTable = createOverTable();
         JScrollPane overScrollPane = new JScrollPane(overTable);
-        overScrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Over Summary", TitledBorder.LEFT, TitledBorder.TOP, new Font("Garamond", Font.BOLD, 18), Color.BLACK));
+        overScrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(0,0,0,0)), "Over Summary", TitledBorder.CENTER, TitledBorder.TOP, new Font("Garamond", Font.BOLD, 18), Color.WHITE));
+        overScrollPane.setOpaque(false);
+        overScrollPane.getViewport().setOpaque(false);
         centerPanel.add(overScrollPane);
 
         add(centerPanel, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        buttonPanel.setBackground(new Color(255, 255, 255, 50));
         JButton addRunButton = new JButton("Add Run");
         JButton addWicketButton = new JButton("Add Wicket");
         JButton nextBallButton = new JButton("Next Ball");
@@ -80,7 +91,7 @@ public class ScoreCardGUI extends BackgroundPanel {
 
     private void styleButton(JButton button) {
         button.setFont(new Font("Garamond", Font.BOLD, 16));
-        button.setBackground(new Color(0, 173, 181));
+        button.setBackground(new Color(57, 62, 70));
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -88,13 +99,13 @@ public class ScoreCardGUI extends BackgroundPanel {
 
     private JTable createScoreTable() {
         String[] columns = {"Batsman", "Runs", "Balls", "4s", "6s", "Strike Rate"};
-        DefaultTableModel model = new DefaultTableModel(columns, 2);
+        DefaultTableModel model = new DefaultTableModel(columns, 11);
         return createNonEditableTable(model);
     }
 
     private JTable createBowlerTable() {
         String[] columns = {"Bowler", "Overs", "Maidens", "Runs", "Wickets", "Economy"};
-        DefaultTableModel model = new DefaultTableModel(columns, 2);
+        DefaultTableModel model = new DefaultTableModel(columns, 11);
         return createNonEditableTable(model);
     }
 
@@ -113,6 +124,18 @@ public class ScoreCardGUI extends BackgroundPanel {
         table.setRowHeight(25);
         table.getTableHeader().setReorderingAllowed(false);
         table.getTableHeader().setResizingAllowed(false);
+        table.setBackground(new Color(57, 62, 70));
+        table.setShowGrid(true);
+        table.setGridColor(Color.BLACK);
+        table.setShowHorizontalLines(true);
+        table.setShowVerticalLines(true);
+        table.setForeground(Color.WHITE);
+        table.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255), 1));
+        table.getTableHeader().setBackground(new Color(34, 40, 49));
+        table.getTableHeader().setForeground(Color.WHITE);
+        table.setOpaque(false);
+        table.setSelectionBackground(new Color(34, 40, 49));
+        table.setSelectionForeground(new Color(192, 192, 192));
         return table;
     }
 
@@ -151,5 +174,7 @@ public class ScoreCardGUI extends BackgroundPanel {
 
         runRateLabel.setText(String.format("Run Rate: %.2f", runRate));
         projectedScoreLabel.setText(String.format("Projected Score: %d", projectedScore));
+        JPanel topPanel = new JPanel(new GridLayout(3, 1, 10, 10));
+        topPanel.setBackground(new Color(255, 255, 255, 50));
     }
 }

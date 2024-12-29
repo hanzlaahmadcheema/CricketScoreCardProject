@@ -52,18 +52,18 @@ public class MainWindow extends JFrame {
         JButton closeButton = new JButton("X");
         closeButton.setFont(new Font("Garamond", Font.BOLD, 16));
         closeButton.setBackground(new Color(57, 62, 70));
-        closeButton.setForeground(new Color(238, 238, 238));
+        closeButton.setForeground(Color.RED);
         closeButton.setFocusPainted(false);
         closeButton.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
         closeButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                closeButton.setBackground(new Color(34, 40, 49));
+                closeButton.setBackground(Color.RED);
                 closeButton.setForeground(new Color(255, 255, 255));
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 closeButton.setBackground(new Color(57, 62, 70));
-                closeButton.setForeground(new Color(255, 255, 255));
+                closeButton.setForeground(Color.RED);
             }
         });
         closeButton.addActionListener(e -> System.exit(0));
@@ -92,7 +92,7 @@ public class MainWindow extends JFrame {
         registerScreen("Leaderboard", new LeaderboardGUI(backgroundImage));
         registerScreen("Commentary", new CommentaryPanel(backgroundImage));
 
-        switchToScreen("Team Setup");
+        switchToScreen("Scorecard");
     }
 
     private void registerScreen(String screenName, JPanel screen) {

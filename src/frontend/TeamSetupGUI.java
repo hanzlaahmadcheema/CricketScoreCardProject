@@ -1,6 +1,7 @@
 package frontend;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
@@ -59,7 +60,7 @@ public class TeamSetupGUI extends BackgroundPanel {
 
         JPanel playerPanel = new JPanel(new GridLayout(1, 2, 20, 20));
         playerPanel.setBackground(new Color(255, 255, 255, 50));
-        playerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        playerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(0,0,0,0)), "Add Players", TitledBorder.CENTER, TitledBorder.TOP, new Font("Garamond", Font.BOLD, 24), Color.WHITE));
 
         team1Table = createPlayerTable("Team 1");
         JScrollPane team1ScrollPane = new JScrollPane(team1Table);
@@ -117,10 +118,12 @@ public class TeamSetupGUI extends BackgroundPanel {
         table.getTableHeader().setReorderingAllowed(false);
         table.getTableHeader().setResizingAllowed(false);
         table.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255), 1));
+        table.setSelectionBackground(new Color(34, 40, 49));
+        table.setSelectionForeground(Color.WHITE);
 
         JTableHeader tableHeader = table.getTableHeader(); 
         tableHeader.setBackground(new Color(34, 40, 49));
-        tableHeader.setForeground(Color.WHITE);
+        tableHeader.setForeground(new Color(192, 192, 192));
         tableHeader.setFont(new Font("Garamond", Font.BOLD, 16));
         tableHeader.setOpaque(false);
 
