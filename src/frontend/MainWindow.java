@@ -49,9 +49,32 @@ public class MainWindow extends JFrame {
             navButton.addActionListener(e -> switchToScreen(screen));
             buttonPanel.add(navButton);
         }
+        JButton closeButton = new JButton("X");
+        closeButton.setFont(new Font("Garamond", Font.BOLD, 16));
+        closeButton.setBackground(new Color(57, 62, 70));
+        closeButton.setForeground(new Color(238, 238, 238));
+        closeButton.setFocusPainted(false);
+        closeButton.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+        closeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                closeButton.setBackground(new Color(34, 40, 49));
+                closeButton.setForeground(new Color(255, 255, 255));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                closeButton.setBackground(new Color(57, 62, 70));
+                closeButton.setForeground(new Color(255, 255, 255));
+            }
+        });
+        closeButton.addActionListener(e -> System.exit(0));
 
         navBarPanel.add(Box.createHorizontalGlue());
+        navBarPanel.add(Box.createHorizontalGlue());
         navBarPanel.add(buttonPanel);
+        navBarPanel.add(Box.createHorizontalGlue());
+        navBarPanel.add(Box.createHorizontalGlue());
+        navBarPanel.add(closeButton);
+        navBarPanel.add(Box.createHorizontalGlue());
         navBarPanel.add(Box.createHorizontalGlue());
 
         add(navBarPanel, BorderLayout.NORTH);
