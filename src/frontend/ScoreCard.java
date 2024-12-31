@@ -219,7 +219,7 @@ public class ScoreCard extends BackgroundPanel {
     // Update the labels for score, run rate, and projected score
     private void updateScoreLabel() {
         double overs = totalOvers + (ballsBowled / 6.0);
-        scoreLabel.setText(String.format("Score: %d/%d (%.1f Overs)", totalRuns, totalWickets, overs));
+        scoreLabel.setText(String.format("Score: %d/%d (%d.%d Overs)", totalRuns, totalWickets, totalOvers, ballsBowled));
 
         double runRate = (overs > 0) ? totalRuns / overs : 0;
         int projectedScore = (int) (runRate * TOTAL_OVERS_IN_MATCH);
