@@ -4,34 +4,34 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
-// MatchSummary class to display and manage the match summary
+
 public class MatchSummary extends BackgroundPanel {
-    // Labels for top performers
+    
     private JLabel bestBatsmanLabel;
     private JLabel bestBowlerLabel;
 
-    // Models for partnership and highlight reel lists
+    
     private DefaultListModel<String> partnershipListModel;
     private DefaultListModel<String> highlightReelListModel;
 
-    // Constructor to initialize the Match Summary screen
+    
     public MatchSummary(Image backgroundImage) {
-        super(backgroundImage); // Set the background image from the parent class
-        setLayout(new BorderLayout(20, 20)); // Use BorderLayout with spacing
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Add padding around the panel
+        super(backgroundImage); 
+        setLayout(new BorderLayout(20, 20)); 
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); 
 
-        // Title label
+        
         JLabel titleLabel = new JLabel("Match Summary", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Calibri", Font.BOLD, 30));
         titleLabel.setForeground(foregroundColor);
-        add(titleLabel, BorderLayout.NORTH); // Add title at the top
+        add(titleLabel, BorderLayout.NORTH); 
 
-        // Summary panel containing Total Scores, Top Performers, and Partnerships
+        
         JPanel summaryPanel = new JPanel();
-        summaryPanel.setLayout(new GridLayout(3, 1, 20, 20)); // Grid with 3 rows
+        summaryPanel.setLayout(new GridLayout(3, 1, 20, 20)); 
         summaryPanel.setOpaque(false);
 
-        // Total Scores section
+        
         JPanel totalScoresPanel = new JPanel(new GridLayout(1, 4, 10, 20));
         totalScoresPanel.setBorder(BorderFactory.createTitledBorder(
             BorderFactory.createLineBorder(transparentColor), 
@@ -47,7 +47,7 @@ public class MatchSummary extends BackgroundPanel {
         team1ScoreLabel1.setFont(new Font("Calibri", Font.BOLD, 18));
         team1ScoreLabel1.setForeground(foregroundColor);
 
-        JLabel team1ScoreLabel2 = new JLabel("200/8 (20 overs)"); // Placeholder text
+        JLabel team1ScoreLabel2 = new JLabel("200/8 (20 overs)"); 
         team1ScoreLabel2.setFont(new Font("Calibri", Font.PLAIN, 18));
         team1ScoreLabel2.setForeground(foregroundColor);
 
@@ -55,17 +55,17 @@ public class MatchSummary extends BackgroundPanel {
         team2ScoreLabel1.setFont(new Font("Calibri", Font.BOLD, 18));
         team2ScoreLabel1.setForeground(foregroundColor);
 
-        JLabel team2ScoreLabel2 = new JLabel("180/9 (20 overs)"); // Placeholder text
+        JLabel team2ScoreLabel2 = new JLabel("180/9 (20 overs)"); 
         team2ScoreLabel2.setFont(new Font("Calibri", Font.PLAIN, 18));
         team2ScoreLabel2.setForeground(foregroundColor);
 
-        // Add components to Total Scores panel
+        
         totalScoresPanel.add(team1ScoreLabel1);
         totalScoresPanel.add(team1ScoreLabel2);
         totalScoresPanel.add(team2ScoreLabel1);
         totalScoresPanel.add(team2ScoreLabel2);
 
-        // Top Performers section
+        
         JPanel topPerformersPanel = new JPanel(new GridLayout(1, 4, 10, 10));
         topPerformersPanel.setBorder(BorderFactory.createTitledBorder(
             BorderFactory.createLineBorder(transparentColor), 
@@ -81,7 +81,7 @@ public class MatchSummary extends BackgroundPanel {
         bestBatsmanLabel1.setFont(new Font("Calibri", Font.BOLD, 18));
         bestBatsmanLabel1.setForeground(foregroundColor);
 
-        JLabel bestBatsmanLabel2 = new JLabel("Player 1 - 80 runs (50 balls)"); // Placeholder text
+        JLabel bestBatsmanLabel2 = new JLabel("Player 1 - 80 runs (50 balls)"); 
         bestBatsmanLabel2.setFont(new Font("Calibri", Font.PLAIN, 18));
         bestBatsmanLabel2.setForeground(foregroundColor);
 
@@ -89,17 +89,17 @@ public class MatchSummary extends BackgroundPanel {
         bestBowlerLabel1.setFont(new Font("Calibri", Font.BOLD, 18));
         bestBowlerLabel1.setForeground(foregroundColor);
 
-        JLabel bestBowlerLabel2 = new JLabel("Player 3 - 4 wickets (4 overs)"); // Placeholder text
+        JLabel bestBowlerLabel2 = new JLabel("Player 3 - 4 wickets (4 overs)"); 
         bestBowlerLabel2.setFont(new Font("Calibri", Font.PLAIN, 18));
         bestBowlerLabel2.setForeground(foregroundColor);
 
-        // Add components to Top Performers panel
+        
         topPerformersPanel.add(bestBatsmanLabel1);
         topPerformersPanel.add(bestBatsmanLabel2);
         topPerformersPanel.add(bestBowlerLabel1);
         topPerformersPanel.add(bestBowlerLabel2);
 
-        // Partnerships section
+        
         JPanel partnershipsPanel = new JPanel(new BorderLayout(20, 20));
         partnershipsPanel.setBorder(BorderFactory.createTitledBorder(
             BorderFactory.createLineBorder(transparentColor), 
@@ -116,7 +116,7 @@ public class MatchSummary extends BackgroundPanel {
         partnershipList.setFont(new Font("Calibri", Font.PLAIN, 24));
         partnershipList.setOpaque(false);
 
-        // Sample partnerships
+        
         partnershipListModel.addElement("Player 1 & Player 2: 120 runs"); 
         partnershipListModel.addElement("Player 3 & Player 4: 50 runs"); 
         partnershipListModel.addElement("Player 5 & Player 6: 30 runs");
@@ -141,15 +141,15 @@ public class MatchSummary extends BackgroundPanel {
 
         partnershipsPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Add panels to the summary panel
+        
         summaryPanel.add(totalScoresPanel);
         summaryPanel.add(topPerformersPanel);
         summaryPanel.add(partnershipsPanel);
 
-        add(summaryPanel, BorderLayout.CENTER); // Add summary panel to the center
+        add(summaryPanel, BorderLayout.CENTER); 
     }
 
-    // Method to update the total scores
+    
     public void updateTotalScores(String team1Score, String team2Score) {
         JLabel team1ScoreLabel2 = (JLabel) ((JPanel) ((JPanel) getComponent(1)).getComponent(0)).getComponent(1);
         JLabel team2ScoreLabel2 = (JLabel) ((JPanel) ((JPanel) getComponent(1)).getComponent(0)).getComponent(3);
@@ -157,13 +157,13 @@ public class MatchSummary extends BackgroundPanel {
         team2ScoreLabel2.setText(team2Score);
     }
 
-    // Method to update the top performers
+    
     public void updateTopPerformers(String bestBatsman, String bestBowler) {
         bestBatsmanLabel.setText(bestBatsman);
         bestBowlerLabel.setText(bestBowler);
     }
 
-    // Method to update the partnerships
+    
     public void updatePartnerships(String[] partnerships) {
         partnershipListModel.clear();
         for (String partnership : partnerships) {
@@ -171,7 +171,7 @@ public class MatchSummary extends BackgroundPanel {
         }
     }
 
-    // Method to update the highlight reel
+    
     public void updateHighlightReel(String[] highlights) {
         highlightReelListModel.clear();
         for (String highlight : highlights) {
