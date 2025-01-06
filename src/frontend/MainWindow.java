@@ -16,6 +16,7 @@ public class MainWindow extends JFrame {
     Color foregroundColor = bp.foregroundColor;
     Color redColor = bp.redColor;
 
+    
     public MainWindow() {
         setTitle("Cricket Scoreboard");
         setSize(1250, 760);
