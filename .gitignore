@@ -1,0 +1,9 @@
+src/database/dbConfig.properties
+.vscode/
+*.class
+lib/
+bin/
+*.log
+*.tmp
+src/database/dbScripts/*.sql
+!src/database/dbScripts/init.sql

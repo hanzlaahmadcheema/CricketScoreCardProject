@@ -1,4 +1,6 @@
-package frontend;
+
+
+import frontend.MainWindow;
 
 // The entry point for the Cricket Scorecard application
 public class Main {
