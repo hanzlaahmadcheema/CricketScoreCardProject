@@ -8,6 +8,13 @@
             "type": "java",
             "name": "TestConnection",
             "request": "launch",
+            "mainClass": "backend.TestConnection",
+            "projectName": "OOP PBL 2nd Semester_baa2abe1"
+        },
+        {
+            "type": "java",
+            "name": "TestConnection",
+            "request": "launch",
             "mainClass": "TestConnection",
             "projectName": "OOP PBL 2nd Semester_baa2abe1"
         },
