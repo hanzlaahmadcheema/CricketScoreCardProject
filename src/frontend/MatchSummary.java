@@ -4,6 +4,9 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
+import backend.DataManager;
+import backend.Match;
+import backend.Player;
 
 public class MatchSummary extends BackgroundPanel {
     

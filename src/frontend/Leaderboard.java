@@ -7,6 +7,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.*;
 
+import backend.DataManager;
+import backend.Player;
 
 public class Leaderboard extends BackgroundPanel {
     

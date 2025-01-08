@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import backend.DataManager;
+import backend.Match;
 
 public class CommentaryPanel extends BackgroundPanel {
     private JTextArea commentaryArea; 

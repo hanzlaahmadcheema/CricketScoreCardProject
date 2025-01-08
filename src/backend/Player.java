@@ -5,6 +5,7 @@ import java.util.*;
 
 public class Player {
     private int id;
+    private int teamId;
     private String name;
     private String role; 
     private int runs;
@@ -16,8 +17,9 @@ public class Player {
         
     }
     
-    public Player(int id, String name, String role) {
+    public Player(int id, int teamId, String name, String role) {
         this.id = id;
+        this.teamId = teamId;
         this.name = name;
         this.role = role;
         this.runs = 0;
@@ -28,6 +30,7 @@ public class Player {
 
     
     public int getId() { return id; }
+    public int getTeamId() { return teamId;}
     public String getName() { return name; }
     public String getRole() { return role; }
     public int getRuns() { return runs; }

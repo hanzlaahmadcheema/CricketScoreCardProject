@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
 
+import backend.DataManager;
 
 public class HomeScreen extends BackgroundPanel {
 

@@ -4,9 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 
+import backend.DataManager;
+
 public class MainWindow extends JFrame {
     private JPanel mainPanel;
-    
+    private DataManager dataManager;
+
     private HashMap<String, JPanel> screenMap;
 
     BackgroundPanel bp = new BackgroundPanel(null);
@@ -18,6 +21,9 @@ public class MainWindow extends JFrame {
 
     
     public MainWindow() {
+        
+        dataManager = new DataManager();
+
         setTitle("Cricket Scoreboard");
         setSize(1250, 760);
         setLocationRelativeTo(null);

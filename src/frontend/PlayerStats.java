@@ -5,6 +5,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
+import backend.DataManager;
+import backend.Player;
 
 public class PlayerStats extends BackgroundPanel {
     
