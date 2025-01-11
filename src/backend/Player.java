@@ -56,7 +56,7 @@ public class Player {
     
     @Override
     public String toString() {
-        return name; 
+        return name + " (" + role + ")";
     }
     
     public void updateBattingStats(int runs, int balls, boolean isBoundary) {
@@ -79,11 +79,11 @@ public class Player {
     }
 
     public double calculateStrikeRate() {
-        return ballsFaced == 0 ? 0 : ((double) runs / ballsFaced) * 100;
+        return ballsFaced == 0 ? 0 : (runs * 100.0) / ballsFaced;
     }
 
     public double calculateEconomy() {
-        return oversBowled == 0 ? 0 : ((double) runs / oversBowled);
+        return oversBowled == 0 ? 0 : runs / oversBowled;
     }
 
     public void resetStats() {

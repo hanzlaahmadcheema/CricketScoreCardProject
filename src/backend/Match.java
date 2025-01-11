@@ -6,12 +6,12 @@ import java.util.List;
 public class Match {
 
     public enum MatchStatus {
-        Upcoming,
         Ongoing,
         Completed
     }
 
-    private int id, totalRuns, totalWickets, totalOvers, ballsBowled, currentOver;
+    private int id, totalRuns, totalWickets, ballsBowled, currentOver;
+    private double totalOvers;
     private String tossWinner, choice, battingFirst, bowlingFirst;
     private boolean isFirstInning;
     private Team team1, team2, battingTeam, bowlingTeam;
@@ -41,9 +41,9 @@ public class Match {
 
 
     public int getId() { return id; }
-    public int getRuns() { return totalRuns; }
-    public int getWickets() { return totalWickets; }
-    public int getOvers() { return totalOvers; }
+    public int getTotalRuns() { return totalRuns; }
+    public int getTotalWickets() { return totalWickets; }
+    public double getTotalOvers() { return totalOvers; }
     public int getBallsBowled() { return ballsBowled; }
     public int getCurrentOver() { return currentOver; }
     public String getTossWinner() { return tossWinner; }
@@ -59,12 +59,13 @@ public class Match {
     public Player getCurrentBowler() { return currentBowler;}
     public List<Integer> getOverRuns() { return overRuns; }
     public List<Integer> getOverWickets() { return overWickets; }
-    
+    public Team getBattingTeam() { return battingTeam; }
+    public Team getBowlingTeam() { return bowlingTeam; }
     
     public void setId(int id) { this.id = id; }
-    public void setRuns(int totalRuns) { this.totalRuns = totalRuns; }
-    public void setWickets(int totalWickets) { this.totalWickets = totalWickets; }
-    public void setOvers(int totalOvers) { this.totalOvers = totalOvers; }
+    public void setTotalRuns(int totalRuns) { this.totalRuns = totalRuns; }
+    public void setTotalWickets(int totalWickets) { this.totalWickets = totalWickets; }
+    public void setTotalOvers(double totalOvers) { this.totalOvers = totalOvers; }
     public void setBallsBowled(int ballsBowled) { this.ballsBowled = ballsBowled; }
     public void setCurrentOver(int currentOver) { this.currentOver = currentOver; }
     public void setTossWinner(String tossWinner) { this.tossWinner = tossWinner; }
@@ -80,6 +81,8 @@ public class Match {
     public void setCurrentBowler(Player currentBowler) { this.currentBowler = currentBowler; }
     public void setOverRuns(List<Integer> overRuns) { this.overRuns = overRuns; }
     public void setOverWickets(List<Integer> overWickets) { this.overWickets = overWickets; }
+    public void setBattingTeam(Team battingTeam) { this.battingTeam = battingTeam; }
+    public void setBowlingTeam(Team bowlingTeam) { this.bowlingTeam = bowlingTeam; }
 
 
     public void startMatch(String tossWinner, String choice) {
@@ -106,13 +109,9 @@ public class Match {
     }
 
     public void switchInning() {
-        Team temp = this.battingTeam;
-        this.battingTeam = this.bowlingTeam;
-        this.bowlingTeam = temp;
-        this.isFirstInning = !this.isFirstInning;
-        this.totalRuns = 0;
-        this.totalWickets = 0;
-        this.totalOvers = 0;
+        Team temp = battingTeam;
+        battingTeam = bowlingTeam;
+        bowlingTeam = temp;
     }
 
     public void selectBatsman(Player batsman, boolean isStriker) {
@@ -127,13 +126,6 @@ public class Match {
         this.currentBowler = bowler;
     }
 
-    public Team getBattingTeam(int team) {
-        return team == 1 ? team1 : team2;
-    }
-
-    public Team getBowlingTeam() {
-        return team1.equals(getBattingTeam(1)) ? team2 : team1;
-    }
 
     public Player getBestBatsman() {
         Player best = null;

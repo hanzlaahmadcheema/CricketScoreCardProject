@@ -1,6 +1,7 @@
 package backend;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.ArrayList;
 
 public class Team {
@@ -70,5 +71,18 @@ public class Team {
         for (Player player : players) {
             player.resetStats();
         }
+    }
+
+        public List<Player> getRemainingPlayers() {
+        return players.stream()
+                      .filter(player -> !player.getIsOut())
+                      .collect(Collectors.toList());
+    }
+
+    public Player getPlayerByName(String name) {
+        return players.stream()
+                      .filter(player -> player.getName().equalsIgnoreCase(name))
+                      .findFirst()
+                      .orElse(null);
     }
 }
