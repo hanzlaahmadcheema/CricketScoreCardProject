@@ -2,6 +2,7 @@ package frontend;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.util.List;
@@ -126,7 +127,7 @@ public class TeamSetup extends BackgroundPanel {
                 model.addRow(new Object[]{"", ""}); // Empty row for missing players
             }
         }
-    }    
+    }   
 
     private void loadExistingData() {
         try {
@@ -171,6 +172,12 @@ public class TeamSetup extends BackgroundPanel {
         tableHeader.setBackground(primaryBackgroundColor);
         tableHeader.setForeground(selectionForegroundColor);
         tableHeader.setFont(new Font("Calibri", Font.BOLD, 16));
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
 
         return table;
     }

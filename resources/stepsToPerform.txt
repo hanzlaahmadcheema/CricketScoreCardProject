@@ -1,0 +1,34 @@
+now i want to setup ScoreCard File in which you need to tell me which variables and methods should create in which file and their connection with each other (No Code)
+following things should be added
+1. Start Match with 1st Inning
+2. select which team won toss
+3. select which team is batting first
+4. select which team is bowling first
+5. update data of batsmans of 1st inning in a table with columns (Batsman, Runs, Balls, 4s, 6s, Strike Rate)
+6. update data of bowlers of 1st inning in a table with columns (Bowler, Overs, Maidens, Runs, Wickets, Economy)
+7. update data of all overs in a table with columns (Over number, Runs, Wickets)
+8. update score, wickets, and overs like (Score: 0/0 (0.0 Overs))
+9. add buttons (Start Match, Add Run, Add Wicket, Next Ball, Add 4 Runs, Add 6 Runs, No Ball, Extra Run, Switch Inning)
+10. after inning completion admin switch inning using "Switch Inning" Button
+11. after switching inning the teams will replace as batting and bowling and new data will display in tables
+12. admin will have to select which bowler is bowling after every over and update his data in table as well
+13. admin will have to select which batsmans is playing first as openers and which one is striker and non-striker and after a batsman is out which new batsman will come
+14. while selecting batsman and bowlers for batting and bowling also show team's players with their roles and only remaining players will be choosen (not who already out) and if a bowler have already bowled a number of overs he allowed he cannot bowl again
+15. add maximum validiations
+16. add a feature to save and load match data
+17. all data will be saved in database
+18. Files 
+        |--backend
+        |       |
+        |       |DataManger.java(for database)
+        |       |--Match.java
+        |       |--Team.java
+        |       |--Player.java
+        |       |-- add if you need more
+        |
+        |
+        |--frontend
+        |       |
+        |       |--ScoreCard.java
+
+--------------------------------------------------------------------------------------------------------
