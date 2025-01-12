@@ -113,18 +113,18 @@ public class TeamSetup extends BackgroundPanel {
     
     private void populatePlayerTable(JTable table, List<Player> players, int startId) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.setRowCount(0); // Clear existing rows
+        model.setRowCount(0); 
     
         for (int i = startId; i < startId + 11; i++) {
-            final int currentId = i; // Create a final variable for the current ID
+            final int currentId = i; 
             Player player = players.stream()
-                                   .filter(p -> p.getId() == currentId) // Use the final variable here
+                                   .filter(p -> p.getId() == currentId) 
                                    .findFirst()
                                    .orElse(null);
             if (player != null) {
                 model.addRow(new Object[]{player.getName(), player.getRole()});
             } else {
-                model.addRow(new Object[]{"", ""}); // Empty row for missing players
+                model.addRow(new Object[]{"", ""}); 
             }
         }
     }   
@@ -135,13 +135,13 @@ public class TeamSetup extends BackgroundPanel {
             List<Team> teams = dataManager.getAllTeams();
     
             if (teams.size() > 0) {
-                Team team1 = teams.get(0); // First team
+                Team team1 = teams.get(0); 
                 team1Field.setText(team1.getName());
                 populatePlayerTable(team1Table, dataManager.getPlayersByTeam(team1.getId()), 1);
             }
     
             if (teams.size() > 1) {
-                Team team2 = teams.get(1); // Second team
+                Team team2 = teams.get(1); 
                 team2Field.setText(team2.getName());
                 populatePlayerTable(team2Table, dataManager.getPlayersByTeam(team2.getId()), 12);
             }
@@ -192,16 +192,16 @@ public class TeamSetup extends BackgroundPanel {
             try {
                 DataManager dataManager = new DataManager();
         
-                // Add or update teams with fixed IDs
+                
                 Team team1 = new Team(1, team1Field.getText().trim());
                 Team team2 = new Team(2, team2Field.getText().trim());
         
                 dataManager.addOrUpdateTeam(team1);
                 dataManager.addOrUpdateTeam(team2);
         
-                // Add or update players
-                addPlayersToTeam(dataManager, team1, team1Table, 1);  // IDs 1-11
-                addPlayersToTeam(dataManager, team2, team2Table, 12); // IDs 12-22
+                
+                addPlayersToTeam(dataManager, team1, team1Table, 1);  
+                addPlayersToTeam(dataManager, team2, team2Table, 12); 
         
                 JOptionPane.showMessageDialog(null, "Teams and players saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
         
@@ -210,7 +210,7 @@ public class TeamSetup extends BackgroundPanel {
             }
         }
         
-        // Updated method for adding/updating players
+        
         private void addPlayersToTeam(DataManager dataManager, Team team, JTable table, int startIndex) {
             DefaultTableModel model = (DefaultTableModel) table.getModel();
             for (int i = 0; i < model.getRowCount(); i++) {
@@ -218,7 +218,7 @@ public class TeamSetup extends BackgroundPanel {
                 String role = (String) model.getValueAt(i, 1);
         
                 if (playerName != null && !playerName.trim().isEmpty() && role != null && !role.trim().isEmpty()) {
-                    int playerId = (team.getId() == 1) ? i + 1 : i + 12; // Fixed IDs: 1–11 for team1, 12–22 for team2
+                    int playerId = (team.getId() == 1) ? i + 1 : i + 12; 
                     Player player = new Player(playerId, team.getId(), playerName, role);
                     dataManager.addOrUpdatePlayer(player, i);
                 }

@@ -16,13 +16,14 @@ public class Match {
     private boolean isFirstInning;
     private Team team1, team2, battingTeam, bowlingTeam;
     private Player striker, nonStriker, currentBowler;
-    private List<Integer> overRuns, overWickets;
+    private List<Integer> overRuns;
+    private List<Integer> overWickets;
     private MatchStatus status;
 
 
     public Match() {
-        this.overRuns = new ArrayList<>();
-        this.overWickets = new ArrayList<>();
+        overRuns = new ArrayList<>();
+        overWickets = new ArrayList<>();
     }
 
 
@@ -155,4 +156,12 @@ public class Match {
         System.out.println("Match ended. Winner: " + (team1.isAllOut() ? "Team 2" : "Team 1"));
     }
     
+    public void addOverRun(int runs) {
+        overRuns.add(runs);
+    }
+
+    public void addOverWicket(int wickets) {
+        overWickets.add(wickets);
+    }
+
 }

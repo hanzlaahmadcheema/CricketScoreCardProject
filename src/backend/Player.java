@@ -3,7 +3,7 @@ package backend;
 public class Player {
 
     private int id, teamId, runs, wickets, ballsFaced, fours, sixes, maidens;
-    private double oversBowled, economy;
+    private double oversBowled, economy, ballsBowled;
     private String name, role;
     private boolean isOut;
 
@@ -21,6 +21,8 @@ public class Player {
         this.fours = 0;
         this.sixes = 0;
         this.maidens = 0;
+        this.ballsBowled = 0;
+        this.isOut = false;
     }
 
     
@@ -34,6 +36,7 @@ public class Player {
     public int getMaidens() { return maidens; }
     public double getOversBowled() { return oversBowled; }
     public double getEconomy() { return economy; }
+    public double getBallsBowled() {return ballsBowled; }
     public String getName() { return name; }
     public String getRole() { return role; }
     public boolean getIsOut() { return isOut; }
@@ -49,6 +52,7 @@ public class Player {
     public void setMaidens(int maidens) { this.maidens = maidens; }
     public void setOversBowled(double oversBowled) { this.oversBowled = oversBowled; }
     public void setEconomy(double economy) { this.economy = economy; }
+    public void setBallsBowled(double ballsBowled) { this.ballsBowled = ballsBowled; }
     public void setName(String name) { this.name = name; }
     public void setRole(String role) { this.role = role; }
     public void setIsOut(boolean isOut) { this.isOut = isOut; }
@@ -72,6 +76,8 @@ public class Player {
         this.runs += runsConceded;
         this.oversBowled += overs;
         this.wickets += wickets;
+        this.ballsBowled += overs * 6;
+        this.economy = calculateEconomy();
     }
 
     public boolean isEligibleBowler(int maxOvers) {
@@ -94,6 +100,8 @@ public class Player {
         this.fours = 0;
         this.sixes = 0;
         this.maidens = 0;
+        this.ballsBowled = 0.0;
+        this.economy = 0.0;
     }
 
 }

@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import backend.Match.MatchStatus;
-
 public class DataManager {
      private static final Logger logger = Logger.getLogger(DataManager.class.getName());
 
@@ -80,6 +78,18 @@ public class DataManager {
                }
           }
 
+          
+    public void resetPlayerData() {
+        String query = "UPDATE players SET runs = 0, wickets = 0, balls_faced = 0, overs_bowled = 0, fours = 0, sixes = 0, maidens = 0, is_out = false";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.executeUpdate();
+            logger.info("Player data reset successfully.");
+        } catch (Exception e) {
+            logger.severe("Error resetting player data: " + e.getMessage());
+        }
+    }
+
           public void addOrUpdatePlayer(Player player, int index) {
                String query = "INSERT INTO players (id, team_id, name, role) VALUES (?, ?, ?, ?) " +
                          "ON DUPLICATE KEY UPDATE name = ?, role = ?";
@@ -142,6 +152,23 @@ public class DataManager {
           }
      }
 
+     public void updatePlayerBowlingStats(Player bowler) {
+        String query = "UPDATE players SET overs_bowled = ?, runs = ?, wickets = ?, balls_bowled = ?, maidens = ?, economy = ? WHERE id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setDouble(1, bowler.getOversBowled());
+            stmt.setInt(2, bowler.getRuns());
+            stmt.setInt(3, bowler.getWickets());
+            stmt.setDouble(4, bowler.getBallsBowled());
+            stmt.setInt(5, bowler.getMaidens());
+            stmt.setDouble(6, bowler.getEconomy());
+            stmt.setInt(7, bowler.getId());
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            logger.severe("Error updating player bowling stats: " + e.getMessage());
+        }
+    }
+    
 public void addOrUpdateMatch(Match match) {
         String query = "INSERT INTO matches (id, team1_id, team2_id, runs, wickets, overs, balls_bowled, status) "
                      + "VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE "
@@ -157,7 +184,7 @@ public void addOrUpdateMatch(Match match) {
             stmt.setInt(7, match.getBallsBowled());
             stmt.setString(8, match.getStatus().name());
 
-            // Update values
+            
             stmt.setInt(9, match.getTeam1().getId());
             stmt.setInt(10, match.getTeam2().getId());
             stmt.setInt(11, match.getTotalRuns());
@@ -189,7 +216,7 @@ public void addOrUpdateMatch(Match match) {
             stmt.setInt(10, player.getSixes());
             stmt.setInt(11, player.getMaidens());
 
-            // Update values
+            
             stmt.setInt(12, player.getRuns());
             stmt.setInt(13, player.getWickets());
             stmt.setInt(14, player.getBallsFaced());
@@ -301,16 +328,16 @@ public void addOrUpdateMatch(Match match) {
              match.setTossWinner(rs.getString("toss_winner"));
              match.setChoice(rs.getString("choice"));
  
-             // Retrieve teams
+             
              Team team1 = getTeamById(rs.getInt("team1_id"));
              Team team2 = getTeamById(rs.getInt("team2_id"));
  
              if (team1 != null) {
-                 team1.setPlayers(getPlayersByTeam(team1.getId())); // Populate players
+                 team1.setPlayers(getPlayersByTeam(team1.getId())); 
              }
  
              if (team2 != null) {
-                 team2.setPlayers(getPlayersByTeam(team2.getId())); // Populate players
+                 team2.setPlayers(getPlayersByTeam(team2.getId())); 
              }
  
              match.setTeam1(team1);
@@ -435,6 +462,31 @@ public void addOrUpdateMatch(Match match) {
         addOrUpdateMatch(currentMatch);
     }
 
+    public void updatePlayerFours(Player striker) {
+        String query = "UPDATE players SET fours = ? WHERE id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+        PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, striker.getFours());
+            stmt.setInt(2, striker.getId());
+            stmt.executeUpdate();
+            } catch (Exception e) {
+                logger.severe("Error updating player fours: " + e.getMessage());
+            }
+    }
+
+    public void updatePlayerSixes(Player striker) {
+        String query = "UPDATE players SET sixes = ? WHERE id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+        PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, striker.getSixes());
+            stmt.setInt(2, striker.getId());
+            stmt.executeUpdate();
+            } catch (Exception e) {
+                logger.severe("Error updating player sixes: " + e.getMessage());
+        }
+    }
+
+
     public void saveMatchData(Match match) {
         String query = "UPDATE matches SET team1_id = ?, team2_id = ?, toss_winner = ?, choice = ?, status = ?, total_runs = ?, total_wickets = ?, total_overs = ? WHERE id = ?";
         try (Connection connection = DatabaseConnection.getConnection();
@@ -473,6 +525,17 @@ public void addOrUpdateMatch(Match match) {
             stmt.executeUpdate();
         } catch (Exception e) {
             logger.severe("Error saving player data: " + e.getMessage());
+        }
+    }
+
+        public void deleteAllPlayers() {
+        String query = "DELETE FROM players";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.executeUpdate();
+            logger.info("All players deleted successfully.");
+        } catch (Exception e) {
+            logger.severe("Error deleting all players: " + e.getMessage());
         }
     }
 }
