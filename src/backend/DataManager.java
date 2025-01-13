@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -169,30 +168,35 @@ public class DataManager {
         }
     }
     
-public void addOrUpdateMatch(Match match) {
-        String query = "INSERT INTO matches (id, team1_id, team2_id, runs, wickets, overs, balls_bowled, status) "
-                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE "
-                     + "team1_id = ?, team2_id = ?, runs = ?, wickets = ?, overs = ?, balls_bowled = ?, status = ?";
-          try (Connection connection = DatabaseConnection.getConnection();
-                    PreparedStatement stmt = connection.prepareStatement(query)) {
+    public void addOrUpdateMatch(Match match) {
+        String query = "INSERT INTO matches (id, team1_id, team2_id, toss_winner, choice, total_runs, total_wickets, total_overs, balls_bowled, status) "
+                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE "
+                     + "team1_id = ?, team2_id = ?, toss_winner = ?, choice = ?, total_runs = ?, total_wickets = ?, total_overs = ?, balls_bowled = ?, status = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, match.getId());
             stmt.setInt(2, match.getTeam1().getId());
             stmt.setInt(3, match.getTeam2().getId());
-            stmt.setInt(4, match.getTotalRuns());
-            stmt.setInt(5, match.getTotalWickets());
-            stmt.setDouble(6, match.getTotalOvers());
-            stmt.setInt(7, match.getBallsBowled());
-            stmt.setString(8, match.getStatus().name());
-
-            
-            stmt.setInt(9, match.getTeam1().getId());
-            stmt.setInt(10, match.getTeam2().getId());
-            stmt.setInt(11, match.getTotalRuns());
-            stmt.setInt(12, match.getTotalWickets());
-            stmt.setDouble(13, match.getTotalOvers());
-            stmt.setInt(14, match.getBallsBowled());
-          stmt.setString(15, match.getStatus().name());
-          stmt.executeUpdate();
+            stmt.setString(4, match.getTossWinner());
+            stmt.setString(5, match.getChoice());
+            stmt.setInt(6, match.getTotalRuns());
+            stmt.setInt(7, match.getTotalWickets());
+            stmt.setDouble(8, match.getTotalOvers());
+            stmt.setInt(9, match.getBallsBowled());
+            stmt.setString(10, match.getStatus().name());
+    
+            // Update part
+            stmt.setInt(11, match.getTeam1().getId());
+            stmt.setInt(12, match.getTeam2().getId());
+            stmt.setString(13, match.getTossWinner());
+            stmt.setString(14, match.getChoice());
+            stmt.setInt(15, match.getTotalRuns());
+            stmt.setInt(16, match.getTotalWickets());
+            stmt.setDouble(17, match.getTotalOvers());
+            stmt.setInt(18, match.getBallsBowled());
+            stmt.setString(19, match.getStatus().name());
+    
+            stmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -317,39 +321,43 @@ public void addOrUpdateMatch(Match match) {
     }
 
     public Match getOngoingMatch() {
-     String query = "SELECT * FROM matches WHERE status = 'Ongoing' LIMIT 1";
-     try (Connection connection = DatabaseConnection.getConnection();
-          PreparedStatement stmt = connection.prepareStatement(query);
-          ResultSet rs = stmt.executeQuery()) {
-         if (rs.next()) {
-             Match match = new Match();
-             match.setId(rs.getInt("id"));
-             match.setStatus(Match.MatchStatus.valueOf(rs.getString("status")));
-             match.setTossWinner(rs.getString("toss_winner"));
-             match.setChoice(rs.getString("choice"));
- 
-             
-             Team team1 = getTeamById(rs.getInt("team1_id"));
-             Team team2 = getTeamById(rs.getInt("team2_id"));
- 
-             if (team1 != null) {
-                 team1.setPlayers(getPlayersByTeam(team1.getId())); 
-             }
- 
-             if (team2 != null) {
-                 team2.setPlayers(getPlayersByTeam(team2.getId())); 
-             }
- 
-             match.setTeam1(team1);
-             match.setTeam2(team2);
- 
-             return match;
-         }
-     } catch (Exception e) {
-         logger.severe("Error retrieving ongoing match: " + e.getMessage());
-     }
-     return null;
- }
+        String query = "SELECT * FROM matches WHERE status = 'Ongoing' LIMIT 1";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                Match match = new Match();
+                match.setId(rs.getInt("id"));
+                match.setStatus(Match.MatchStatus.valueOf(rs.getString("status")));
+                match.setTossWinner(rs.getString("toss_winner"));
+                match.setChoice(rs.getString("choice"));
+                match.setTotalRuns(rs.getInt("total_runs"));
+                match.setTotalWickets(rs.getInt("total_wickets"));
+                match.setTotalOvers(rs.getDouble("total_overs"));
+                match.setBallsBowled(rs.getInt("balls_bowled"));
+    
+                // Retrieve teams
+                Team team1 = getTeamById(rs.getInt("team1_id"));
+                Team team2 = getTeamById(rs.getInt("team2_id"));
+    
+                if (team1 != null) {
+                    team1.setPlayers(getPlayersByTeam(team1.getId())); // Populate players
+                }
+    
+                if (team2 != null) {
+                    team2.setPlayers(getPlayersByTeam(team2.getId())); // Populate players
+                }
+    
+                match.setTeam1(team1);
+                match.setTeam2(team2);
+    
+                return match;
+            }
+        } catch (Exception e) {
+            logger.severe("Error retrieving ongoing match: " + e.getMessage());
+        }
+        return null;
+    }
 
     public boolean checkOngoingMatch() {
      String query = "SELECT COUNT(*) FROM matches WHERE status = ?";

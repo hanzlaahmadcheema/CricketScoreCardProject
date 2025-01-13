@@ -6,6 +6,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import backend.*;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import java.awt.event.ActionListener;
@@ -23,6 +26,7 @@ public class ScoreCard extends BackgroundPanel {
     private Match currentMatch;
     private Player striker, nonStriker, currentBowler;
     private Team battingTeam, bowlingTeam;
+    private Team team1, team2;
 
     public ScoreCard(Image backgroundImage) {
         super(backgroundImage);
@@ -73,7 +77,7 @@ public class ScoreCard extends BackgroundPanel {
 
         centerPanel.add(createTableScrollPane(battingTable, "Batting Team Stats"));
         centerPanel.add(createTableScrollPane(bowlerTable, "Bowling Team Stats"));
-        centerPanel.add(createTableScrollPane(overTable, "Over Summary"));
+        // centerPanel.add(createTableScrollPane(overTable, "Over Summary"));
 
         add(centerPanel, BorderLayout.CENTER);
     }
@@ -87,27 +91,29 @@ public class ScoreCard extends BackgroundPanel {
         JButton endMatchButton = createButton("End Match", e -> endMatch());
         JButton add1RunButton = createButton("1", e -> addRun(1));
         JButton add2RunButton = createButton("2", e -> addRun(2));
-        JButton add3RunButton = createButton("3", e -> addRun(3));
+        // JButton add3RunButton = createButton("3", e -> addRun(3));
         JButton add4RunButton = createButton("4", e -> add4Runs());
-        JButton add5RunButton = createButton("5", e -> addRun(5));
+        // JButton add5RunButton = createButton("5", e -> addRun(5));
         JButton add6RunButton = createButton("6", e -> add6Runs());
         JButton addWicketButton = createButton("Wicket", e -> addWicket());
         JButton nextBallButton = createButton("Next Ball", e -> nextBallUpdate());
         JButton switchStrikerButton = createButton("Switch Striker", e -> switchStriker());
-        JButton switchInningButton = createButton("Switch Inning", e -> dataManager.resetPlayerData());
+        JButton switchInningButton = createButton("Switch Inning", e -> switchInning());
+        JButton resetMatchButton = createButton("Reset", e -> dataManager.resetPlayerData());
 
         
         buttonPanel.add(startMatchButton);
         buttonPanel.add(add1RunButton);
         buttonPanel.add(add2RunButton);
-        buttonPanel.add(add3RunButton);
+        // buttonPanel.add(add3RunButton);
         buttonPanel.add(add4RunButton);
-        buttonPanel.add(add5RunButton);
+        // buttonPanel.add(add5RunButton);
         buttonPanel.add(add6RunButton);
         buttonPanel.add(addWicketButton);
         buttonPanel.add(nextBallButton);
         buttonPanel.add(switchStrikerButton);
         buttonPanel.add(switchInningButton);
+        buttonPanel.add(resetMatchButton);
         buttonPanel.add(endMatchButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
@@ -155,7 +161,7 @@ public class ScoreCard extends BackgroundPanel {
     }
 
     private JTable createBowlerTable() {
-        String[] columns = { "Bowler", "Overs", "Maidens", "Runs", "Wickets", "Economy" };
+        String[] columns = { "Bowler", "Overs", "Runs", "Wickets", "Economy" };
         DefaultTableModel model = new DefaultTableModel(columns, 11);
         return createNonEditableTable(model);
     }
@@ -196,15 +202,15 @@ public class ScoreCard extends BackgroundPanel {
             currentMatch = dataManager.getOngoingMatch();
             if (currentMatch != null) {
                 setupMatch(currentMatch);
+                updateScoreLabel(); // Update the score label with the saved data
             } else {
                 JOptionPane.showMessageDialog(this, "No ongoing match found. Start a new match.", "Info", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error loading match data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            currentMatch = null; 
+            currentMatch = null;
         }
     }
-    
 
     private void startMatch() {
         try {
@@ -257,6 +263,38 @@ public class ScoreCard extends BackgroundPanel {
         }
     }
     
+private void selectNewBowler() {
+    List<Player> bowlingPlayers = currentMatch.getBowlingTeam().getPlayers();
+    List<Player> eligibleBowlers = new ArrayList<>();
+
+    for (Player player : bowlingPlayers) {
+        if (player.getOversBowled() < 3 && player != currentBowler) {
+            eligibleBowlers.add(player);
+        }
+    }
+
+    if (eligibleBowlers.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "No eligible bowlers left. All bowlers have completed their 3 overs.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Show the list of bowlers from the bottom
+    Collections.reverse(eligibleBowlers);
+
+    Player selectedBowler = null;
+    while (selectedBowler == null) {
+        selectedBowler = (Player) JOptionPane.showInputDialog(this, "Select New Bowler", "Player Selection",
+                JOptionPane.QUESTION_MESSAGE, null, eligibleBowlers.toArray(), eligibleBowlers.get(0));
+
+        if (selectedBowler == null) {
+            JOptionPane.showMessageDialog(this, "Bowler selection incomplete. Please select a bowler.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    currentBowler = selectedBowler;
+    JOptionPane.showMessageDialog(this, "New bowler selected: " + currentBowler.getName(), "Info", JOptionPane.INFORMATION_MESSAGE);
+}
+
     private void endMatch() {
         if (currentMatch == null) {
             JOptionPane.showMessageDialog(this, "No ongoing match to end.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -300,12 +338,17 @@ public class ScoreCard extends BackgroundPanel {
             return;
         }
     
-        if (match.getChoice().equalsIgnoreCase("Bat")) {
-            battingTeam = match.getTossWinner().equals(match.getTeam1().getName()) ? match.getTeam1() : match.getTeam2();
-            bowlingTeam = match.getTossWinner().equals(match.getTeam1().getName()) ? match.getTeam2() : match.getTeam1();
+        Team team1 = match.getTeam1();
+        Team team2 = match.getTeam2();
+        String tossWinner = match.getTossWinner();
+        String choice = match.getChoice();
+    
+        if (choice.equalsIgnoreCase("Bat")) {
+            battingTeam = tossWinner.equals(team1.getName()) ? team1 : team2;
+            bowlingTeam = tossWinner.equals(team1.getName()) ? team2 : team1;
         } else {
-            bowlingTeam = match.getTossWinner().equals(match.getTeam1().getName()) ? match.getTeam1() : match.getTeam2();
-            battingTeam = match.getTossWinner().equals(match.getTeam1().getName()) ? match.getTeam2() : match.getTeam1();
+            bowlingTeam = tossWinner.equals(team1.getName()) ? team1 : team2;
+            battingTeam = tossWinner.equals(team1.getName()) ? team2 : team1;
         }
     
         match.setBattingTeam(battingTeam);
@@ -345,36 +388,75 @@ public class ScoreCard extends BackgroundPanel {
         currentMatch.setTotalWickets(currentMatch.getTotalWickets() + 1);
         currentBowler.setWickets(currentBowler.getWickets() + 1);
         nextBallUpdate();
+    
+        // Prompt for a new batsman
+        List<Player> battingPlayers = currentMatch.getBattingTeam().getPlayers();
+        List<Player> availableBatsmen = new ArrayList<>();
+        for (Player player : battingPlayers) {
+            if (!player.getIsOut() && player != striker && player != nonStriker) {
+                availableBatsmen.add(player);
+            }
+        }
+    
+        if (availableBatsmen.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No available batsmen left.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    
+        Player newBatsman = null;
+        while (newBatsman == null) {
+            newBatsman = (Player) JOptionPane.showInputDialog(this, "Select New Batsman", "Player Selection",
+                    JOptionPane.QUESTION_MESSAGE, null, availableBatsmen.toArray(), availableBatsmen.get(0));
+    
+            if (newBatsman == null) {
+                JOptionPane.showMessageDialog(this, "Batsman selection incomplete. Please select a batsman.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    
+        // Set the new batsman as the striker
+        striker.setIsOut(true);
+        striker = newBatsman;
+        JOptionPane.showMessageDialog(this, "New batsman selected: " + striker.getName(), "Info", JOptionPane.INFORMATION_MESSAGE);
+    
+        updateScoreLabel();
+        populateTables();
+        dataManager.savePlayerData(striker);
+        dataManager.updatePlayerBowlingStats(currentBowler);
+        dataManager.saveMatchData(currentMatch);
     }
     
 
-        private void nextBallUpdate() {
-            if (currentMatch.getTotalOvers() >= TOTAL_OVERS_IN_MATCH || currentMatch.getTotalWickets() == MAX_WICKETS) {
-                JOptionPane.showMessageDialog(this, "Inning is already completed.", "Info", JOptionPane.INFORMATION_MESSAGE);
-                return;
-            }
-        
-            currentMatch.setBallsBowled(currentMatch.getBallsBowled() + 1);
-            currentBowler.setBallsBowled(currentBowler.getBallsBowled() + 1);
-            striker.setBallsFaced(striker.getBallsFaced() + 1);
-        
-            if (currentMatch.getBallsBowled() % 6 == 0) {
-                currentMatch.setTotalOvers(currentMatch.getTotalOvers() + 1);
-                if (currentBowler.getBallsBowled() % 6 == 0) {
-                    currentBowler.setOversBowled(currentBowler.getOversBowled() + 1);
-                }
-            }
-        
-            if (striker.getBallsFaced() % 6 == 0) {
-                switchStriker();
-            }
-
-            updateScoreLabel();
-            populateTables();
-            dataManager.savePlayerData(striker);
-            dataManager.updatePlayerBowlingStats(currentBowler);
-            dataManager.saveMatchData(currentMatch);
+    private void nextBallUpdate() {
+        if (currentMatch.getTotalOvers() >= TOTAL_OVERS_IN_MATCH || currentMatch.getTotalWickets() == MAX_WICKETS) {
+            JOptionPane.showMessageDialog(this, "Inning is already completed.", "Info", JOptionPane.INFORMATION_MESSAGE);
+            return;
         }
+    
+        currentMatch.setBallsBowled(currentMatch.getBallsBowled() + 1);
+        currentBowler.setBallsBowled(currentBowler.getBallsBowled() + 1);
+        striker.setBallsFaced(striker.getBallsFaced() + 1);
+    
+        // Calculate fractional overs
+        int completedOvers = currentMatch.getBallsBowled() / 6;
+        int remainingBalls = currentMatch.getBallsBowled() % 6;
+        currentMatch.setTotalOvers(completedOvers + remainingBalls / 10.0);
+    
+        // Check if the over is completed
+        if (remainingBalls == 0) {
+            currentBowler.setOversBowled(currentBowler.getOversBowled() + 1);
+            if (currentBowler.getOversBowled() >= 3) {
+                JOptionPane.showMessageDialog(this, currentBowler.getName() + " has completed their 3 overs.", "Info", JOptionPane.INFORMATION_MESSAGE);
+            }
+            switchStriker(); // Switch the striker and non-striker after an over
+            selectNewBowler();
+        }
+    
+        updateScoreLabel();
+        populateTables();
+        dataManager.savePlayerData(striker);
+        dataManager.updatePlayerBowlingStats(currentBowler);
+        dataManager.saveMatchData(currentMatch);
+    }
 
         private void add4Runs() {
         if (currentMatch.getTotalOvers() >= TOTAL_OVERS_IN_MATCH || currentMatch.getTotalWickets() == MAX_WICKETS) {
@@ -443,10 +525,12 @@ public class ScoreCard extends BackgroundPanel {
         DefaultTableModel bowlerModel = (DefaultTableModel) bowlerTable.getModel();
         bowlerModel.setRowCount(0);
         for (Player player : currentMatch.getBowlingTeam().getPlayers()) {
+            int completedOvers = (int) player.getBallsBowled() / 6;
+            int remainingBalls = (int) player.getBallsBowled() % 6;
+            double fractionalOvers = completedOvers + remainingBalls / 10.0;
             bowlerModel.addRow(new Object[]{
                 player.getName(),
-                player.getOversBowled(),
-                player.getMaidens(),
+                fractionalOvers,
                 player.getRuns(),
                 player.getWickets(),
                 player.calculateEconomy()
