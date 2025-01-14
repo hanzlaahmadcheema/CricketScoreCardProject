@@ -33,6 +33,14 @@ public class Team {
         this.players.add(player);
     }
 
+    public int getTotalRuns() {
+        int totalRuns = 0;
+        for (Player player : players) {
+            totalRuns += player.getRunsScored();
+        }
+        return totalRuns;
+    }
+    
     public List<Player> getAvailableBatsmen() {
         List<Player> availableBatsmen = new ArrayList<>();
         for (Player player : players) {
@@ -56,7 +64,7 @@ public class Team {
     public List<Player> getOutPlayers() {
         List<Player> outPlayers = new ArrayList<>();
         for (Player player : players) {
-            if (player.getBallsFaced() > 0 && player.getRuns() == 0) {
+            if (player.getBallsFaced() > 0 && player.getRunsScored() == 0) {
                 outPlayers.add(player);
             }
         }

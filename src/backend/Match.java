@@ -131,7 +131,7 @@ public class Match {
     public Player getBestBatsman() {
         Player best = null;
         for (Player player : battingTeam.getPlayers()) {
-            if (best == null || player.getRuns() > best.getRuns()) {
+            if (best == null || player.getRunsScored() > best.getRunsScored()) {
                 best = player;
             }
         }
@@ -149,7 +149,7 @@ public class Match {
     }
 
     public boolean isMatchTied() {
-        return team1.isAllOut() && team2.isAllOut() && team1.getPlayers().stream().mapToInt(Player::getRuns).sum() == team2.getPlayers().stream().mapToInt(Player::getRuns).sum();
+        return team1.isAllOut() && team2.isAllOut() && team1.getPlayers().stream().mapToInt(Player::getRunsScored).sum() == team2.getPlayers().stream().mapToInt(Player::getRunsScored).sum();
     }
 
     public void endMatch() {
@@ -164,4 +164,17 @@ public class Match {
         overWickets.add(wickets);
     }
 
+    public void addRunsToOver(int over, int runs) {
+        while (overRuns.size() <= over) {
+            overRuns.add(0);
+        }
+        overRuns.set(over, overRuns.get(over) + runs);
+    }
+
+    public void addWicketToOver(int over) {
+        while (overWickets.size() <= over) {
+            overWickets.add(0);
+        }
+        overWickets.set(over, overWickets.get(over) + 1);
+    }
 }

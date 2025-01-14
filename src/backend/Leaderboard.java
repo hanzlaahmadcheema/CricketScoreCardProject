@@ -16,14 +16,14 @@ public class Leaderboard {
 
     
     public void updateLeaderboard(List<Player> players) {
-        players.sort((p1, p2) -> Integer.compare(p2.getRuns(), p1.getRuns()));
+        players.sort((p1, p2) -> Integer.compare(p2.getRunsScored(), p1.getRunsScored()));
         topPlayers = players.subList(0, Math.min(players.size(), 10));
     }
 
     public void displayTopPlayers() {
         System.out.println("Top Players:");
         for (Player player : topPlayers) {
-            System.out.println(player.getName() + " - Runs: " + player.getRuns());
+            System.out.println(player.getName() + " - Runs: " + player.getRunsScored());
         }
     }
 }
