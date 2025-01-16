@@ -83,7 +83,6 @@ public class DataManager {
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.executeUpdate();
-            logger.info("Player data reset successfully.");
         } catch (Exception e) {
             logger.severe("Error resetting player data: " + e.getMessage());
         }
@@ -197,7 +196,7 @@ public class DataManager {
             stmt.setInt(9, match.getBallsBowled());
             stmt.setString(10, match.getStatus().name());
     
-            // Update part
+            
             stmt.setInt(11, match.getTeam1().getId());
             stmt.setInt(12, match.getTeam2().getId());
             stmt.setString(13, match.getTossWinner());
@@ -353,16 +352,16 @@ public class DataManager {
                 match.setTotalOvers(rs.getDouble("total_overs"));
                 match.setBallsBowled(rs.getInt("balls_bowled"));
     
-                // Retrieve teams
+                
                 Team team1 = getTeamById(rs.getInt("team1_id"));
                 Team team2 = getTeamById(rs.getInt("team2_id"));
     
                 if (team1 != null) {
-                    team1.setPlayers(getPlayersByTeam(team1.getId())); // Populate players
+                    team1.setPlayers(getPlayersByTeam(team1.getId())); 
                 }
     
                 if (team2 != null) {
-                    team2.setPlayers(getPlayersByTeam(team2.getId())); // Populate players
+                    team2.setPlayers(getPlayersByTeam(team2.getId())); 
                 }
     
                 match.setTeam1(team1);

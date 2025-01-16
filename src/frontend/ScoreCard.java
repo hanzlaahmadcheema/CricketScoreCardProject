@@ -27,6 +27,7 @@ public class ScoreCard extends BackgroundPanel {
     private Player striker, nonStriker, currentBowler;
     private Team battingTeam, bowlingTeam;
     private Team team1, team2;
+    private int target;
 
     public ScoreCard(Image backgroundImage) {
         super(backgroundImage);
@@ -55,8 +56,8 @@ public class ScoreCard extends BackgroundPanel {
         inningLabel = createLabel("Inning: 1", Font.BOLD, 20);
         currentTeamLabel = createLabel("Current Team: -", Font.BOLD, 20);
         scoreLabel = createLabel("Score: 0/0 (0.0 Overs)", Font.BOLD, 24);
-        runRateLabel = createLabel("Run Rate: 0.00", Font.PLAIN, 18);
-        projectedScoreLabel = createLabel("Projected Score: 0", Font.PLAIN, 18);
+        runRateLabel = createLabel("Run Rate: 0.00", Font.BOLD, 18);
+        projectedScoreLabel = createLabel("Projected Score: 0", Font.BOLD, 18);
 
         topPanel.add(inningLabel);
         topPanel.add(currentTeamLabel);
@@ -77,7 +78,7 @@ public class ScoreCard extends BackgroundPanel {
 
         centerPanel.add(createTableScrollPane(battingTable, "Batting Team Stats"));
         centerPanel.add(createTableScrollPane(bowlerTable, "Bowling Team Stats"));
-        // centerPanel.add(createTableScrollPane(overTable, "Over Summary"));
+        
 
         add(centerPanel, BorderLayout.CENTER);
     }
@@ -113,8 +114,8 @@ public class ScoreCard extends BackgroundPanel {
         buttonPanel.add(addextraRunButton);
         buttonPanel.add(addWicketButton);
         buttonPanel.add(nextBallButton);
-        // buttonPanel.add(switchStrikerButton);
-        // buttonPanel.add(switchInningButton);
+        
+        
         buttonPanel.add(resetMatchButton);
         buttonPanel.add(endMatchButton);
 
@@ -145,7 +146,7 @@ public class ScoreCard extends BackgroundPanel {
     private JLabel createLabel(String text, int style, int size) {
         JLabel label = new JLabel(text, SwingConstants.CENTER);
         label.setFont(new Font("Calibri", style, size));
-        label.setForeground(Color.BLACK);
+        label.setForeground(Color.WHITE);
         return label;
     }
     private void styleButton(JButton button) {
@@ -204,7 +205,7 @@ public class ScoreCard extends BackgroundPanel {
             currentMatch = dataManager.getOngoingMatch();
             if (currentMatch != null) {
                 setupMatch(currentMatch);
-                updateScoreLabel(); // Update the score label with the saved data
+                updateScoreLabel(); 
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error loading match data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -285,7 +286,7 @@ private void selectNewBowler() {
         return;
     }
 
-    // Show the list of bowlers from the bottom
+    
     Collections.reverse(eligibleBowlers);
 
     Player selectedBowler = null;
@@ -324,6 +325,7 @@ private void endMatch() {
 
         JOptionPane.showMessageDialog(this, "Match ended successfully! Winning team: " + winningTeam, "Success", JOptionPane.INFORMATION_MESSAGE);
         resetUI();
+        refreshData();
     }
 }
     
@@ -385,7 +387,8 @@ private void endMatch() {
         striker = currentMatch.getBattingTeam().getPlayers().get(0);
         nonStriker = currentMatch.getBattingTeam().getPlayers().get(1);
         currentBowler = currentMatch.getBowlingTeam().getPlayers().get(0);
-        dataManager.resetPlayerData();;
+        dataManager.resetPlayerData();
+        refreshData();
     }
     
     private void addRun(int runs) {
@@ -397,6 +400,8 @@ private void endMatch() {
             }
             return;
         }
+
+
         if (currentMatch.getTotalOvers() >= TOTAL_OVERS_IN_MATCH || currentMatch.getTotalWickets() >= MAX_WICKETS) {
             JOptionPane.showMessageDialog(this, "Inning is already completed.", "Info", JOptionPane.INFORMATION_MESSAGE);
             if (isFirstInning) {
@@ -478,7 +483,7 @@ private void endMatch() {
                 }
             }
         }
-        // Prompt for a new batsman
+        
         List<Player> battingPlayers = currentMatch.getBattingTeam().getPlayers();
         List<Player> availableBatsmen = new ArrayList<>();
         for (Player player : battingPlayers) {
@@ -502,7 +507,7 @@ private void endMatch() {
             }
         }
     
-        // Set the new batsman as the striker
+        
         striker.setIsOut(true);
         striker = newBatsman;
         JOptionPane.showMessageDialog(this, "New batsman selected: " + striker.getName(), "Info", JOptionPane.INFORMATION_MESSAGE);
@@ -530,6 +535,7 @@ private void endMatch() {
                 int confirmation = JOptionPane.showConfirmDialog(this, "Do you want to switch the inning?", "Confirm Switch Inning", JOptionPane.YES_NO_OPTION);
                 if (confirmation == JOptionPane.YES_OPTION) {
                 switchInning();
+                return;
                 }
             }
         }
@@ -537,18 +543,18 @@ private void endMatch() {
         currentBowler.setBallsBowled(currentBowler.getBallsBowled() + 1);
         striker.setBallsFaced(striker.getBallsFaced() + 1);
     
-        // Calculate fractional overs
+        
         int completedOvers = currentMatch.getBallsBowled() / 6;
         int remainingBalls = currentMatch.getBallsBowled() % 6;
         currentMatch.setTotalOvers(completedOvers + remainingBalls / 10.0);
     
-        // Check if the over is completed
+        
         if (remainingBalls == 0) {
             currentBowler.setOversBowled(currentBowler.getOversBowled() + 1);
             if (currentBowler.getOversBowled() >= 3) {
                 JOptionPane.showMessageDialog(this, currentBowler.getName() + " has completed their 3 overs.", "Info", JOptionPane.INFORMATION_MESSAGE);
             }
-            switchStriker(); // Switch the striker and non-striker after an over
+            switchStriker(); 
             selectNewBowler();
         }
     
@@ -599,8 +605,16 @@ private void endMatch() {
     private void updateScoreLabel() {
         scoreLabel.setText("Score: " + currentMatch.getTotalRuns() + "/" + currentMatch.getTotalWickets() + " (" + currentMatch.getTotalOvers() + " Overs)");
         runRateLabel.setText("Run Rate: " + calculateRunRate());
-        projectedScoreLabel.setText("Projected Score: " + calculateProjectedScore());
+    
+        if (isFirstInning) {
+            projectedScoreLabel.setText("Projected Score: " + calculateProjectedScore());
+        } else {
+            projectedScoreLabel.setText("Target: " + target);
         }
+
+        inningLabel.setText("Inning: " + (isFirstInning ? "1" : "2"));
+        currentTeamLabel.setText("Current Team: " + (isFirstInning ? currentMatch.getBattingTeam().getName() : currentMatch.getBowlingTeam().getName()));
+    }
 
         private double calculateRunRate() {
         return currentMatch.getTotalOvers() == 0 ? 0.0 : Math.round((currentMatch.getTotalRuns() / currentMatch.getTotalOvers()) * 100.0) / 100.0;
@@ -616,6 +630,15 @@ private void endMatch() {
         updateOverTable();
     }
     
+    private void refreshData() {
+        if (currentMatch == null) {
+            JOptionPane.showMessageDialog(this, "No ongoing match to refresh.", "Info", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        updateScoreLabel();
+        populateTables();
+    }
+
     private void updateBattingTable() {
         DefaultTableModel battingModel = (DefaultTableModel) battingTable.getModel();
         battingModel.setRowCount(0);
@@ -666,13 +689,14 @@ private void endMatch() {
         if (isFirstInning) {
             isFirstInning = false;
             currentMatch.switchInning();
-            int target = currentMatch.getTotalRuns() + 1;
+            target = currentMatch.getTotalRuns() + 1;
             resetMatchData();
             updateScoreLabel();
             populateTables();
             dataManager.saveMatchData(currentMatch);
             JOptionPane.showMessageDialog(this, "First inning completed. Target for second team: " + target, "Info", JOptionPane.INFORMATION_MESSAGE);
             System.out.println(target);
+            refreshData();
         } else {
             endMatch();
         }

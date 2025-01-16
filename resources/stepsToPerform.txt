@@ -1,5 +1,3 @@
-now i want to setup ScoreCard File in which you need to tell me which variables and methods should create in which file and their connection with each other (No Code)
-following things should be added
 1. Start Match with 1st Inning
 2. select which team won toss
 3. select which team is batting first

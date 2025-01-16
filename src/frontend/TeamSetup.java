@@ -190,61 +190,62 @@ public class TeamSetup extends BackgroundPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
+                if (!validateTeamPlayers(team1Table, "Team 1") || !validateTeamPlayers(team2Table, "Team 2")) {
+                    return; // Validation failed, do not proceed
+                }
+    
                 DataManager dataManager = new DataManager();
-        
-                
+    
                 Team team1 = new Team(1, team1Field.getText().trim());
                 Team team2 = new Team(2, team2Field.getText().trim());
-        
+    
                 dataManager.addOrUpdateTeam(team1);
                 dataManager.addOrUpdateTeam(team2);
-        
-                
+    
                 addPlayersToTeam(dataManager, team1, team1Table, 1);  
                 addPlayersToTeam(dataManager, team2, team2Table, 12); 
-        
+    
                 JOptionPane.showMessageDialog(null, "Teams and players saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-        
+    
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-        
-        
+    
         private void addPlayersToTeam(DataManager dataManager, Team team, JTable table, int startIndex) {
             DefaultTableModel model = (DefaultTableModel) table.getModel();
             for (int i = 0; i < model.getRowCount(); i++) {
                 String playerName = (String) model.getValueAt(i, 0);
                 String role = (String) model.getValueAt(i, 1);
-        
+    
                 if (playerName != null && !playerName.trim().isEmpty() && role != null && !role.trim().isEmpty()) {
                     int playerId = (team.getId() == 1) ? i + 1 : i + 12; 
                     Player player = new Player(playerId, team.getId(), playerName, role);
                     dataManager.addOrUpdatePlayer(player, i);
                 }
             }
-        }      
-
+        }
+    
         private boolean validateTeamPlayers(JTable table, String teamName) {
             DefaultTableModel model = (DefaultTableModel) table.getModel();
             int playerCount = 0;
-        
+    
             for (int i = 0; i < model.getRowCount(); i++) {
                 String playerName = (String) model.getValueAt(i, 0);
                 String role = (String) model.getValueAt(i, 1);
-        
+    
                 if ((playerName != null && !playerName.trim().isEmpty()) &&
                     (role != null && !role.trim().isEmpty())) {
                     playerCount++;
                 }
             }
-        
+    
             if (playerCount != 11) {
                 JOptionPane.showMessageDialog(null, teamName + " must have exactly 11 players!", "Error", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
-        
+    
             return true;
-        }        
+        }
     }
 }
