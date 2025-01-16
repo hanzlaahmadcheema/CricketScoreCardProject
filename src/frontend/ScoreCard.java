@@ -401,6 +401,14 @@ private void endMatch() {
             return;
         }
 
+        if (!isFirstInning && currentMatch.getTotalRuns() + runs >= target) {
+            // Batting team wins
+            currentMatch.setTotalRuns(currentMatch.getTotalRuns() + runs);
+            updateScoreLabel();
+            JOptionPane.showMessageDialog(this, "Match ended! Winner: " + currentMatch.getBattingTeam().getName(), "Success", JOptionPane.INFORMATION_MESSAGE);
+            endMatch(); // Automatically end the match
+            return;
+        }
 
         if (currentMatch.getTotalOvers() >= TOTAL_OVERS_IN_MATCH || currentMatch.getTotalWickets() >= MAX_WICKETS) {
             JOptionPane.showMessageDialog(this, "Inning is already completed.", "Info", JOptionPane.INFORMATION_MESSAGE);
@@ -410,6 +418,7 @@ private void endMatch() {
                 switchInning();
                 }
             }
+            return;
         }
         
         striker.setRunsScored(striker.getRunsScored() + runs);
@@ -609,12 +618,17 @@ private void endMatch() {
         if (isFirstInning) {
             projectedScoreLabel.setText("Projected Score: " + calculateProjectedScore());
         } else {
-            projectedScoreLabel.setText("Target: " + target);
+            if (currentMatch.getTotalRuns() >= target) {
+                projectedScoreLabel.setText("Winner: " + currentMatch.getBattingTeam().getName());
+            } else {
+                projectedScoreLabel.setText("Target: " + target);
+            }
         }
-
+    
         inningLabel.setText("Inning: " + (isFirstInning ? "1" : "2"));
         currentTeamLabel.setText("Current Team: " + (isFirstInning ? currentMatch.getBattingTeam().getName() : currentMatch.getBowlingTeam().getName()));
     }
+    
 
         private double calculateRunRate() {
         return currentMatch.getTotalOvers() == 0 ? 0.0 : Math.round((currentMatch.getTotalRuns() / currentMatch.getTotalOvers()) * 100.0) / 100.0;
@@ -667,7 +681,7 @@ private void endMatch() {
                 player.getRunsConceded(),
                 player.getWickets(),
                 player.calculateEconomy()
-            });
+            }); 
         }
     }
     
@@ -687,20 +701,34 @@ private void endMatch() {
     
     private void switchInning() {
         if (isFirstInning) {
+            // Switching to the second inning
             isFirstInning = false;
             currentMatch.switchInning();
-            target = currentMatch.getTotalRuns() + 1;
+            target = currentMatch.getTotalRuns() + 1; // Set the target
             resetMatchData();
             updateScoreLabel();
             populateTables();
             dataManager.saveMatchData(currentMatch);
             JOptionPane.showMessageDialog(this, "First inning completed. Target for second team: " + target, "Info", JOptionPane.INFORMATION_MESSAGE);
-            System.out.println(target);
             refreshData();
         } else {
-            endMatch();
+            // End the match and determine the winner
+            String winningTeam;
+            if (currentMatch.getTotalRuns() >= target) {
+                winningTeam = currentMatch.getBattingTeam().getName();
+            } else if (currentMatch.getTotalRuns() < target - 1) {
+                winningTeam = currentMatch.getBowlingTeam().getName();
+            } else {
+                winningTeam = "Match Tied";
+            }
+    
+            JOptionPane.showMessageDialog(this, "Match ended successfully! Winning team: " + winningTeam, "Success", JOptionPane.INFORMATION_MESSAGE);
+            currentMatch.setStatus(Match.MatchStatus.Completed);
+            dataManager.saveMatchData(currentMatch);
+            resetUI(); // Reset the UI after the match ends
         }
     }
+    
 
 }
 
