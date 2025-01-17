@@ -1,7 +1,6 @@
 src/database/dbConfig.properties
 .vscode/
 *.class
-lib/
 bin/
 *.log
 *.tmp
