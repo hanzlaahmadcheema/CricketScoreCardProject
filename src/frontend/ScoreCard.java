@@ -389,6 +389,8 @@ private void endMatch() {
         currentBowler = currentMatch.getBowlingTeam().getPlayers().get(0);
         dataManager.resetPlayerData();
         refreshData();
+        populateTables();
+        dataManager.clearPlayerStats();
     }
     
     private void addRun(int runs) {
@@ -644,7 +646,7 @@ private void endMatch() {
         updateOverTable();
     }
     
-    private void refreshData() {
+    public void refreshData() {
         if (currentMatch == null) {
             JOptionPane.showMessageDialog(this, "No ongoing match to refresh.", "Info", JOptionPane.INFORMATION_MESSAGE);
             return;

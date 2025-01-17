@@ -4,80 +4,73 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-
+import java.util.ArrayList;
+import java.util.List;
 import backend.DataManager;
 import backend.Player;
 
 public class PlayerStats extends BackgroundPanel {
-    
+
     private JTable playerStatsTable;
-    private JTable partnershipTable;
     private DefaultTableModel playerStatsModel;
-    private DefaultTableModel partnershipModel;
+    private DataManager dataManager;
 
-    
     public PlayerStats(Image backgroundImage) {
-        super(backgroundImage); 
-        setLayout(new BorderLayout(20, 20));  
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); 
+        super(backgroundImage);
+        dataManager = new DataManager(); // Initialize DataManager
+        setLayout(new BorderLayout(20, 20));
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        
+        // Title Label
         JLabel titleLabel = new JLabel("Player Stats", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Calibri", Font.BOLD, 24));
         titleLabel.setForeground(foregroundColor);
         add(titleLabel, BorderLayout.NORTH);
 
-        
+        // Player Stats Table
         playerStatsModel = createPlayerStatsModel();
         playerStatsTable = createNonEditableTable(playerStatsModel);
-        JScrollPane playerScrollPane = new JScrollPane(playerStatsTable);
-        playerScrollPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10)); 
-        playerScrollPane.setOpaque(false);
-        add(playerScrollPane, BorderLayout.CENTER);
+        JScrollPane scrollPane = new JScrollPane(playerStatsTable);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setBorder(BorderFactory.createLineBorder(transparentColor));
 
-        
-        JPanel partnershipPanel = new JPanel(new BorderLayout(20, 20));
-        partnershipPanel.setBackground(backgroundColor);
+        add(scrollPane, BorderLayout.CENTER);
+         // Refresh Button
+    JButton refreshButton = new JButton("Refresh Stats");
+    refreshButton.setFont(new Font("Calibri", Font.BOLD, 16));
+    refreshButton.setBackground(primaryBackgroundColor);
+    refreshButton.setForeground(foregroundColor);
+    refreshButton.setFocusPainted(false);
 
-        JLabel partnershipLabel = new JLabel("Partnership Tracking", SwingConstants.CENTER);
-        partnershipLabel.setFont(new Font("Calibri", Font.BOLD, 20));
-        partnershipLabel.setForeground(foregroundColor);
-        partnershipPanel.add(partnershipLabel, BorderLayout.NORTH);
-
-        partnershipModel = createPartnershipModel();
-        partnershipTable = createNonEditableTable(partnershipModel);
-        JScrollPane partnershipScrollPane = new JScrollPane(partnershipTable);
-        partnershipScrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        partnershipScrollPane.setOpaque(false);
-        partnershipScrollPane.getViewport().setOpaque(false);
-        partnershipPanel.add(partnershipScrollPane, BorderLayout.CENTER);
-
-        add(partnershipPanel, BorderLayout.SOUTH); 
+    // Add action listener to refresh button
+    refreshButton.addActionListener(e -> refreshPlayerStats());
+    add(refreshButton, BorderLayout.SOUTH); // Add button at the bottom
     }
 
+    // Dynamically populate the player stats model
+private DefaultTableModel createPlayerStatsModel() {
+    String[] columns = {"Player Name", "Runs Scored", "Balls", "4s", "6s", "Runs Conceded", "Wickets", "Overs"};
+    List<Player> filteredPlayers = dataManager.getFilteredPlayers(); // Fetch all players
     
-    private DefaultTableModel createPlayerStatsModel() {
-        String[] columns = {"Player Name", "Runs", "Balls", "4s", "6s", "Wickets", "Overs"};
-        Object[][] data = {
-            {"Player 1", 0, 0, 0, 0, 0, 0},
-            {"Player 2", 0, 0, 0, 0, 0, 0},
-            {"Player 3", 0, 0, 0, 0, 0, 0},
-            {"Player 4", 0, 0, 0, 0, 0, 0}
-        };
-        return new DefaultTableModel(data, columns);
+    // Populate table with filtered players
+    Object[][] data = new Object[filteredPlayers.size()][columns.length];
+    for (int i = 0; i < filteredPlayers.size(); i++) {
+        Player player = filteredPlayers.get(i);
+        data[i][0] = player.getName();
+        data[i][1] = player.getRunsScored();    // Runs Scored
+        data[i][2] = player.getBallsFaced();    // Balls
+        data[i][3] = player.getFours();         // 4s
+        data[i][4] = player.getSixes();         // 6s
+        data[i][5] = player.getRunsConceded();  // Runs Conceded
+        data[i][6] = player.getWickets();       // Wickets
+        data[i][7] = player.getOversBowled();   // Overs
     }
 
-    
-    private DefaultTableModel createPartnershipModel() {
-        String[] columns = {"Batsman 1", "Batsman 2", "Runs Scored"};
-        Object[][] data = {
-            {"Player 1", "Player 2", 0},
-            {"Player 3", "Player 4", 0}
-        };
-        return new DefaultTableModel(data, columns);
-    }
+    return new DefaultTableModel(data, columns);
+}
 
-    
+    // Create a non-editable table
     private JTable createNonEditableTable(DefaultTableModel model) {
         JTable table = new JTable(model) {
             @Override
@@ -85,33 +78,36 @@ public class PlayerStats extends BackgroundPanel {
                 return false; 
             }
         };
-
-        
-        table.setFont(new Font("Calibri", Font.PLAIN, 16));
-        table.setRowHeight(25);
+    
+        // Ensure table header is properly linked
+        table.getTableHeader().setFont(new Font("Calibri", Font.BOLD, 16));
         table.getTableHeader().setReorderingAllowed(false);
         table.getTableHeader().setResizingAllowed(false);
-        table.setBackground(secondaryBackgroundColor);
-        table.setShowGrid(true);
-        table.setGridColor(blackColor);
-        table.setForeground(foregroundColor);
         table.getTableHeader().setBackground(primaryBackgroundColor);
         table.getTableHeader().setForeground(foregroundColor);
-
+    
+        // Other table settings
+        table.setFont(new Font("Calibri", Font.PLAIN, 16));
+        table.setRowHeight(25);
+        table.setShowGrid(true);
+        table.setGridColor(blackColor);
+        table.setBackground(secondaryBackgroundColor);
+        table.setForeground(foregroundColor);
+    
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         for (int i = 0; i < table.getColumnCount(); i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
-
+    
         return table;
     }
-
     
+
+    // Update stats of a specific player
     public void updatePlayerStats(String playerName, int runs, int balls, int fours, int sixes, int wickets, double overs) {
         for (int i = 0; i < playerStatsModel.getRowCount(); i++) {
             if (playerStatsModel.getValueAt(i, 0).equals(playerName)) {
-                
                 playerStatsModel.setValueAt(runs, i, 1);
                 playerStatsModel.setValueAt(balls, i, 2);
                 playerStatsModel.setValueAt(fours, i, 3);
@@ -121,32 +117,41 @@ public class PlayerStats extends BackgroundPanel {
                 return;
             }
         }
-        
+
         JOptionPane.showMessageDialog(this, "Player not found: " + playerName, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
-    
-    public void updatePartnership(String batsman1, String batsman2, int runsScored) {
-        for (int i = 0; i < partnershipModel.getRowCount(); i++) {
-            if (partnershipModel.getValueAt(i, 0).equals(batsman1) && partnershipModel.getValueAt(i, 1).equals(batsman2)) {
-                
-                partnershipModel.setValueAt(runsScored, i, 2);
-                return;
-            }
-        }
+    // Update all player stats
+    public void refreshPlayerStats() {
+        List<Player> players = dataManager.getFilteredPlayers(); // Fetch all players from the database
         
-        JOptionPane.showMessageDialog(this, "Partnership not found: " + batsman1 + " and " + batsman2, "Error", JOptionPane.ERROR_MESSAGE);
+        // Ensure the table model size matches the number of players
+        if (players.size() != playerStatsModel.getRowCount()) {
+            // Update table model with the new size if necessary
+            playerStatsModel.setRowCount(players.size());
+        }
+    
+        // Update each player's stats in the table
+        for (int i = 0; i < players.size(); i++) {
+            Player player = players.get(i);
+            playerStatsModel.setValueAt(player.getName(), i, 0);
+            playerStatsModel.setValueAt(player.getRunsScored(), i, 1);
+            playerStatsModel.setValueAt(player.getBallsFaced(), i, 2);
+            playerStatsModel.setValueAt(player.getFours(), i, 3);
+            playerStatsModel.setValueAt(player.getSixes(), i, 4);
+            playerStatsModel.setValueAt(player.getRunsConceded(), i, 5);
+            playerStatsModel.setValueAt(player.getWickets(), i, 6);
+            playerStatsModel.setValueAt(player.getOversBowled(), i, 7);
+        }
     }
     
-    
+
+    // Reset all stats to 0
     public void resetStats() {
         for (int i = 0; i < playerStatsModel.getRowCount(); i++) {
             for (int j = 1; j < playerStatsModel.getColumnCount(); j++) {
                 playerStatsModel.setValueAt(0, i, j);
             }
-        }
-        for (int i = 0; i < partnershipModel.getRowCount(); i++) {
-            partnershipModel.setValueAt(0, i, 2);
         }
     }
 }

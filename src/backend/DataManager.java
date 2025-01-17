@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class DataManager {
      private static final Logger logger = Logger.getLogger(DataManager.class.getName());
@@ -117,35 +119,72 @@ public class DataManager {
                }
           }
           public List<Player> getPlayersByTeam(int teamId) {
-               List<Player> players = new ArrayList<>();
-               String query = "SELECT * FROM players WHERE team_id = ?";
-               try (Connection connection = DatabaseConnection.getConnection();
-                    PreparedStatement stmt = connection.prepareStatement(query)) {
-                   stmt.setInt(1, teamId);
-                   ResultSet rs = stmt.executeQuery();
-                   while (rs.next()) {
-                       Player player = new Player();
-                       player.setId(rs.getInt("id"));
-                       player.setTeamId(rs.getInt("team_id"));
-                       player.setName(rs.getString("name"));
-                       player.setRole(rs.getString("role"));
-                       player.setRunsScored(rs.getInt("runsScored"));
-                       player.setRunsConceded(rs.getInt("runsConceded"));
-                       player.setWickets(rs.getInt("wickets"));
-                       player.setBallsFaced(rs.getInt("ballsFaced"));
-                       player.setOversBowled(rs.getDouble("oversBowled"));
-                       player.setFours(rs.getInt("fours"));
-                       player.setSixes(rs.getInt("sixes"));
-                       player.setMaidens(rs.getInt("maidens"));
-                       players.add(player);
-                   }
-           
-               } catch (Exception e) {
-                   System.err.println("Error retrieving players by team ID: " + e.getMessage());
-               }
-               return players;
-           }
-           
+            List<Player> players = new ArrayList<>();
+            String query = "SELECT * FROM players WHERE team_id = ?";
+            try (Connection connection = DatabaseConnection.getConnection();
+                 PreparedStatement stmt = connection.prepareStatement(query)) {
+                stmt.setInt(1, teamId);
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    Player player = new Player();
+                    player.setId(rs.getInt("id"));
+                    player.setTeamId(rs.getInt("team_id"));
+                    player.setName(rs.getString("name"));
+                    player.setRole(rs.getString("role"));
+                    player.setRunsScored(rs.getInt("runsScored"));
+                    player.setRunsConceded(rs.getInt("runsConceded"));
+                    player.setWickets(rs.getInt("wickets"));
+                    player.setBallsFaced(rs.getInt("ballsFaced"));
+                    player.setOversBowled(rs.getDouble("oversBowled"));
+                    player.setFours(rs.getInt("fours"));
+                    player.setSixes(rs.getInt("sixes"));
+                    player.setMaidens(rs.getInt("maidens"));
+                    players.add(player);
+                }
+        
+            } catch (Exception e) {
+                System.err.println("Error retrieving players by team ID: " + e.getMessage());
+            }
+            return players;
+        }
+        
+        public List<Player> getAllPlayers() {
+            List<Player> players = new ArrayList<>();
+            String query = "SELECT * FROM players"; // Modify this based on your table schema
+            
+            try (Connection connection = DatabaseConnection.getConnection();
+                 Statement statement = connection.createStatement();
+                 ResultSet resultSet = statement.executeQuery(query)) {
+                
+                while (resultSet.next()) {
+                    Player player = new Player();
+                    player.setName(resultSet.getString("name"));
+                    player.setRunsScored(resultSet.getInt("runsScored"));
+                    player.setBallsFaced(resultSet.getInt("ballsFaced"));
+                    player.setFours(resultSet.getInt("fours"));
+                    player.setSixes(resultSet.getInt("sixes"));
+                    player.setRunsConceded(resultSet.getInt("runsConceded"));
+                    player.setWickets(resultSet.getInt("wickets"));
+                    player.setOversBowled(resultSet.getDouble("oversBowled"));
+                    // Populate any other fields as needed
+                    players.add(player);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            return players;
+        }
+        
+        
+        public List<Player> getFilteredPlayers() {
+            List<Player> players = getAllPlayers();
+            return players.stream()
+                          .filter(player -> player.getRunsScored() != 0 || player.getBallsFaced() != 0 || player.getFours() != 0 ||
+                                            player.getSixes() != 0 || player.getWickets() != 0 || player.getOversBowled() > 0 ||
+                                            player.getRunsConceded() != 0)
+                          .collect(Collectors.toList());
+        }
 
            public void updatePlayerBattingStats(Player player) {
             String query = "UPDATE players SET runsScored = ?, ballsFaced = ?, fours = ?, sixes = ? WHERE id = ?";
@@ -563,4 +602,30 @@ public class DataManager {
             logger.severe("Error deleting all players: " + e.getMessage());
         }
     }
+
+    public void clearPlayerStats() {
+    String query = "UPDATE players SET "
+            + "wickets = 0, "
+            + "ballsFaced = 0, "
+            + "oversBowled = 0, "
+            + "fours = 0, "
+            + "sixes = 0, "
+            + "maidens = 0, "
+            + "is_out = 0, "
+            + "ballsBowled = 0, "
+            + "economy = 0, "
+            + "runsScored = 0, "
+            + "runsConceded = 0, "
+            + "created_at = NULL"; // Reset created_at to NULL or a default timestamp if necessary
+
+    try (Connection connection = DatabaseConnection.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        int rowsUpdated = preparedStatement.executeUpdate();
+        System.out.println(rowsUpdated + " player records cleared.");
+    } catch (Exception e) {
+        e.printStackTrace();
+        System.out.println("Error clearing player stats: " + e.getMessage());
+    }
+}
+
 }

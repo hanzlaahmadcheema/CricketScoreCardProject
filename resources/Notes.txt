@@ -1,2 +1,1 @@
 ADD LABEL FOR a player is out/not-out.
-when target achieved by a particular team, show message "winner".
