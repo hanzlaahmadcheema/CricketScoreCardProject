@@ -191,7 +191,7 @@ public class TeamSetup extends BackgroundPanel {
         public void actionPerformed(ActionEvent e) {
             try {
                 if (!validateTeamPlayers(team1Table, "Team 1") || !validateTeamPlayers(team2Table, "Team 2")) {
-                    return; // Validation failed, do not proceed
+                    return; 
                 }
     
                 DataManager dataManager = new DataManager();

@@ -71,6 +71,9 @@ public class MainWindow extends JFrame {
                     navButton.setBackground(secondaryBackgroundColor);
                     navButton.setForeground(foregroundColor);
                 }
+
+
+                
             });
 
             navButton.addActionListener(e -> switchToScreen(screen));

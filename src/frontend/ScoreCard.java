@@ -404,11 +404,11 @@ private void endMatch() {
         }
 
         if (!isFirstInning && currentMatch.getTotalRuns() + runs >= target) {
-            // Batting team wins
+            
             currentMatch.setTotalRuns(currentMatch.getTotalRuns() + runs);
             updateScoreLabel();
             JOptionPane.showMessageDialog(this, "Match ended! Winner: " + currentMatch.getBattingTeam().getName(), "Success", JOptionPane.INFORMATION_MESSAGE);
-            endMatch(); // Automatically end the match
+            endMatch(); 
             return;
         }
 
@@ -703,10 +703,10 @@ private void endMatch() {
     
     private void switchInning() {
         if (isFirstInning) {
-            // Switching to the second inning
+            
             isFirstInning = false;
             currentMatch.switchInning();
-            target = currentMatch.getTotalRuns() + 1; // Set the target
+            target = currentMatch.getTotalRuns() + 1; 
             resetMatchData();
             updateScoreLabel();
             populateTables();
@@ -714,7 +714,7 @@ private void endMatch() {
             JOptionPane.showMessageDialog(this, "First inning completed. Target for second team: " + target, "Info", JOptionPane.INFORMATION_MESSAGE);
             refreshData();
         } else {
-            // End the match and determine the winner
+            
             String winningTeam;
             if (currentMatch.getTotalRuns() >= target) {
                 winningTeam = currentMatch.getBattingTeam().getName();
@@ -727,7 +727,7 @@ private void endMatch() {
             JOptionPane.showMessageDialog(this, "Match ended successfully! Winning team: " + winningTeam, "Success", JOptionPane.INFORMATION_MESSAGE);
             currentMatch.setStatus(Match.MatchStatus.Completed);
             dataManager.saveMatchData(currentMatch);
-            resetUI(); // Reset the UI after the match ends
+            resetUI(); 
         }
     }
     
