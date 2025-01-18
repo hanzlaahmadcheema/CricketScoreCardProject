@@ -50,8 +50,6 @@ public class HomeScreen extends BackgroundPanel {
         imagePanel.add(scorecardButton);
         imagePanel.add(playerStatsButton);
         imagePanel.add(matchSummaryButton);
-        imagePanel.add(leaderboardButton);
-        imagePanel.add(commentaryButton);
 
         
         add(imagePanel, BorderLayout.CENTER);

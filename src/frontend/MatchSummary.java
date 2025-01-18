@@ -3,178 +3,143 @@ package frontend;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
 import backend.DataManager;
-import backend.Match;
 import backend.Player;
 
 public class MatchSummary extends BackgroundPanel {
-    
+
     private JLabel bestBatsmanLabel;
     private JLabel bestBowlerLabel;
-
-    
-    private DefaultListModel<String> partnershipListModel;
+    private JLabel team1ScoreLabel;
+    private JLabel team2ScoreLabel;
     private DefaultListModel<String> highlightReelListModel;
+    private DataManager dataManager;
 
-    
     public MatchSummary(Image backgroundImage) {
-        super(backgroundImage); 
-        setLayout(new BorderLayout(20, 20)); 
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); 
+        super(backgroundImage);
+        setLayout(new BorderLayout(20, 20));
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        
+        dataManager = new DataManager();
+
         JLabel titleLabel = new JLabel("Match Summary", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Calibri", Font.BOLD, 30));
         titleLabel.setForeground(foregroundColor);
-        add(titleLabel, BorderLayout.NORTH); 
+        add(titleLabel, BorderLayout.NORTH);
 
-        
         JPanel summaryPanel = new JPanel();
-        summaryPanel.setLayout(new GridLayout(3, 1, 20, 20)); 
+        summaryPanel.setLayout(new GridLayout(3, 1, 20, 20));
         summaryPanel.setOpaque(false);
 
-        
-        JPanel totalScoresPanel = new JPanel(new GridLayout(1, 4, 10, 20));
+        JPanel totalScoresPanel = new JPanel(new GridLayout(1, 2, 10, 20));
         totalScoresPanel.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(transparentColor), 
-            "Total Scores", 
-            TitledBorder.CENTER, 
-            TitledBorder.TOP, 
-            new Font("Calibri", Font.BOLD, 24), 
-            foregroundColor
+                BorderFactory.createLineBorder(transparentColor),
+                "Total Scores",
+                TitledBorder.CENTER,
+                TitledBorder.TOP,
+                new Font("Calibri", Font.BOLD, 30),
+                foregroundColor
         ));
         totalScoresPanel.setBackground(backgroundColor);
 
-        JLabel team1ScoreLabel1 = new JLabel("Team 1:", SwingConstants.RIGHT);
-        team1ScoreLabel1.setFont(new Font("Calibri", Font.BOLD, 18));
-        team1ScoreLabel1.setForeground(foregroundColor);
+        team1ScoreLabel = new JLabel(dataManager.getTeamName(1)+": 0/0 (0.0)", SwingConstants.CENTER);
+        team1ScoreLabel.setFont(new Font("Calibri", Font.BOLD, 24));
+        team1ScoreLabel.setForeground(foregroundColor);
+        totalScoresPanel.add(team1ScoreLabel);
 
-        JLabel team1ScoreLabel2 = new JLabel("200/8 (20 overs)"); 
-        team1ScoreLabel2.setFont(new Font("Calibri", Font.PLAIN, 18));
-        team1ScoreLabel2.setForeground(foregroundColor);
+        team2ScoreLabel = new JLabel(dataManager.getTeamName(2)+": 0/0 (0.0)", SwingConstants.CENTER);
+        team2ScoreLabel.setFont(new Font("Calibri", Font.BOLD, 24));
+        team2ScoreLabel.setForeground(foregroundColor);
+        totalScoresPanel.add(team2ScoreLabel);
 
-        JLabel team2ScoreLabel1 = new JLabel("Team 2:", SwingConstants.RIGHT);
-        team2ScoreLabel1.setFont(new Font("Calibri", Font.BOLD, 18));
-        team2ScoreLabel1.setForeground(foregroundColor);
+        summaryPanel.add(totalScoresPanel);
 
-        JLabel team2ScoreLabel2 = new JLabel("180/9 (20 overs)"); 
-        team2ScoreLabel2.setFont(new Font("Calibri", Font.PLAIN, 18));
-        team2ScoreLabel2.setForeground(foregroundColor);
-
-        
-        totalScoresPanel.add(team1ScoreLabel1);
-        totalScoresPanel.add(team1ScoreLabel2);
-        totalScoresPanel.add(team2ScoreLabel1);
-        totalScoresPanel.add(team2ScoreLabel2);
-
-        
         JPanel topPerformersPanel = new JPanel(new GridLayout(1, 4, 10, 10));
         topPerformersPanel.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(transparentColor), 
-            "Top Performers", 
-            TitledBorder.CENTER, 
-            TitledBorder.TOP, 
-            new Font("Calibri", Font.BOLD, 24), 
-            foregroundColor
+                BorderFactory.createLineBorder(transparentColor),
+                "Top Performers",
+                TitledBorder.CENTER,
+                TitledBorder.TOP,
+                new Font("Calibri", Font.BOLD, 30),
+                foregroundColor
         ));
         topPerformersPanel.setBackground(backgroundColor);
 
         JLabel bestBatsmanLabel1 = new JLabel("Best Batsman:", SwingConstants.RIGHT);
-        bestBatsmanLabel1.setFont(new Font("Calibri", Font.BOLD, 18));
+        bestBatsmanLabel1.setFont(new Font("Calibri", Font.BOLD, 26));
         bestBatsmanLabel1.setForeground(foregroundColor);
 
-        JLabel bestBatsmanLabel2 = new JLabel("Player 1 - 80 runs (50 balls)"); 
-        bestBatsmanLabel2.setFont(new Font("Calibri", Font.PLAIN, 18));
-        bestBatsmanLabel2.setForeground(foregroundColor);
+        bestBatsmanLabel = new JLabel("No data available");
+        bestBatsmanLabel.setFont(new Font("Calibri", Font.BOLD, 24));
+        bestBatsmanLabel.setForeground(foregroundColor);
 
         JLabel bestBowlerLabel1 = new JLabel("Best Bowler:", SwingConstants.RIGHT);
-        bestBowlerLabel1.setFont(new Font("Calibri", Font.BOLD, 18));
+        bestBowlerLabel1.setFont(new Font("Calibri", Font.BOLD, 26));
         bestBowlerLabel1.setForeground(foregroundColor);
 
-        JLabel bestBowlerLabel2 = new JLabel("Player 3 - 4 wickets (4 overs)"); 
-        bestBowlerLabel2.setFont(new Font("Calibri", Font.PLAIN, 18));
-        bestBowlerLabel2.setForeground(foregroundColor);
+        bestBowlerLabel = new JLabel("No data available");
+        bestBowlerLabel.setFont(new Font("Calibri", Font.BOLD, 24));
+        bestBowlerLabel.setForeground(foregroundColor);
 
-        
         topPerformersPanel.add(bestBatsmanLabel1);
-        topPerformersPanel.add(bestBatsmanLabel2);
+        topPerformersPanel.add(bestBatsmanLabel);
         topPerformersPanel.add(bestBowlerLabel1);
-        topPerformersPanel.add(bestBowlerLabel2);
+        topPerformersPanel.add(bestBowlerLabel);
 
-        
-        JPanel partnershipsPanel = new JPanel(new BorderLayout(20, 20));
-        partnershipsPanel.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(transparentColor), 
-            "Key Partnerships", 
-            TitledBorder.CENTER, 
-            TitledBorder.TOP, 
-            new Font("Calibri", Font.BOLD, 24), 
-            foregroundColor
-        ));
-        partnershipsPanel.setBackground(backgroundColor);
+        summaryPanel.add(topPerformersPanel);
 
-        partnershipListModel = new DefaultListModel<>();
-        JList<String> partnershipList = new JList<>(partnershipListModel);
-        partnershipList.setFont(new Font("Calibri", Font.PLAIN, 24));
-        partnershipList.setOpaque(false);
+        add(summaryPanel, BorderLayout.CENTER);
 
-        
-        partnershipListModel.addElement("Player 1 & Player 2: 120 runs"); 
-        partnershipListModel.addElement("Player 3 & Player 4: 50 runs"); 
-        partnershipListModel.addElement("Player 5 & Player 6: 30 runs");
-
-        partnershipList.setCellRenderer(new DefaultListCellRenderer() {
+        // Add refresh button
+        JButton refreshButton = new JButton("↻");
+        refreshButton.setFont(new Font("Calibri", Font.BOLD, 20));
+        refreshButton.setForeground(foregroundColor);
+        refreshButton.setBackground(primaryBackgroundColor);
+        refreshButton.addActionListener(new ActionListener() {
             @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                label.setOpaque(false);
-                label.setFont(new Font("Calibri", Font.BOLD, 18));
-                label.setForeground(foregroundColor);
-                label.setHorizontalAlignment(SwingConstants.CENTER);
-                label.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-                return label;
+            public void actionPerformed(ActionEvent e) {
+                updateTotalScores();
+                updateTopPerformers();
             }
         });
-
-        JScrollPane scrollPane = new JScrollPane(partnershipList);
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);
-        scrollPane.setBorder(null);
-
-        partnershipsPanel.add(scrollPane, BorderLayout.CENTER);
-
-        
-        summaryPanel.add(totalScoresPanel);
-        summaryPanel.add(topPerformersPanel);
-        summaryPanel.add(partnershipsPanel);
-
-        add(summaryPanel, BorderLayout.CENTER); 
+        add(refreshButton, BorderLayout.SOUTH);
     }
 
-    
-    public void updateTotalScores(String team1Score, String team2Score) {
-        JLabel team1ScoreLabel2 = (JLabel) ((JPanel) ((JPanel) getComponent(1)).getComponent(0)).getComponent(1);
-        JLabel team2ScoreLabel2 = (JLabel) ((JPanel) ((JPanel) getComponent(1)).getComponent(0)).getComponent(3);
-        team1ScoreLabel2.setText(team1Score);
-        team2ScoreLabel2.setText(team2Score);
+    public void updateTotalScores() {
+        String team1Score = dataManager.getTeamScore(1); // Fetch score for team 1 from database
+        String team2Score = dataManager.getTeamScore(2); // Fetch score for team 2 from database
+
+        team1ScoreLabel.setText(dataManager.getTeamName(1)+": " + team1Score);
+        team2ScoreLabel.setText(dataManager.getTeamName(2)+": " + team2Score);
+        this.revalidate();
+        this.repaint();
     }
 
-    
-    public void updateTopPerformers(String bestBatsman, String bestBowler) {
-        bestBatsmanLabel.setText(bestBatsman);
-        bestBowlerLabel.setText(bestBowler);
-    }
+    public void updateTopPerformers() {
+        List<Player> topBatsmen = dataManager.getTopPerformers("batsman", 1);
+        List<Player> topBowlers = dataManager.getTopPerformers("bowler", 1);
 
-    
-    public void updatePartnerships(String[] partnerships) {
-        partnershipListModel.clear();
-        for (String partnership : partnerships) {
-            partnershipListModel.addElement(partnership);
+        if (!topBatsmen.isEmpty()) {
+            Player topBatsman = topBatsmen.get(0);
+            bestBatsmanLabel.setText(topBatsman.getName() + " - " + topBatsman.getRunsScored() + " runs (" + topBatsman.getBallsFaced() + " balls)");
+        } else {
+            bestBatsmanLabel.setText("No data available");
         }
+
+        if (!topBowlers.isEmpty()) {
+            Player topBowler = topBowlers.get(0);
+            bestBowlerLabel.setText(topBowler.getName() + " - " + topBowler.getWickets() + " wickets (" + topBowler.getOversBowled() + " overs)");
+        } else {
+            bestBowlerLabel.setText("No data available");
+        }
+        this.revalidate();
+        this.repaint();
     }
 
-    
     public void updateHighlightReel(String[] highlights) {
         highlightReelListModel.clear();
         for (String highlight : highlights) {

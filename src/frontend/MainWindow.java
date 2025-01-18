@@ -49,8 +49,7 @@ public class MainWindow extends JFrame {
 
         String[] screens = {
             "Home", "Team Setup", "Scorecard", 
-            "Player Statistics", "Match Summary", 
-            "Leaderboard", "Commentary"
+            "Player Statistics", "Match Summary"
         };
 
         for (String screen : screens) {
@@ -80,7 +79,7 @@ public class MainWindow extends JFrame {
         JButton closeButton = new JButton("X");
         closeButton.setFont(new Font("Calibri", Font.BOLD, 16));
         closeButton.setBackground(secondaryBackgroundColor);
-        closeButton.setForeground(redColor);
+        closeButton.setForeground(foregroundColor);
         closeButton.setFocusPainted(false);
         closeButton.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
 
@@ -92,7 +91,7 @@ public class MainWindow extends JFrame {
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 closeButton.setBackground(secondaryBackgroundColor);
-                closeButton.setForeground(redColor);
+                closeButton.setForeground(foregroundColor);
             }
         });
 
@@ -104,14 +103,41 @@ public class MainWindow extends JFrame {
             }
         });
 
+        JButton minimizeButton = new JButton("—");
+        minimizeButton.setFont(new Font("Calibri", Font.BOLD, 16));
+        minimizeButton.setBackground(secondaryBackgroundColor);
+        minimizeButton.setForeground(foregroundColor);
+        minimizeButton.setFocusPainted(false);
+        minimizeButton.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+
+        minimizeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                minimizeButton.setBackground(foregroundColor);
+                minimizeButton.setForeground(secondaryBackgroundColor);
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                minimizeButton.setBackground(secondaryBackgroundColor);
+                minimizeButton.setForeground(foregroundColor);
+            }
+        });
+
+        minimizeButton.addActionListener(e -> {
+                setState(JFrame.ICONIFIED);
+        });
+
+        navBarPanel.add(Box.createHorizontalGlue());
+        navBarPanel.add(Box.createHorizontalGlue());
         navBarPanel.add(Box.createHorizontalGlue());
         navBarPanel.add(Box.createHorizontalGlue());
         navBarPanel.add(buttonPanel);
         navBarPanel.add(Box.createHorizontalGlue());
         navBarPanel.add(Box.createHorizontalGlue());
+        navBarPanel.add(Box.createHorizontalGlue());
+        navBarPanel.add(Box.createHorizontalGlue());
+        navBarPanel.add(minimizeButton);
+        navBarPanel.add(Box.createHorizontalGlue());
         navBarPanel.add(closeButton);
-        navBarPanel.add(Box.createHorizontalGlue());
-        navBarPanel.add(Box.createHorizontalGlue());
 
         add(navBarPanel, BorderLayout.NORTH);
 
