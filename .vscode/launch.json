@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Main",
+            "projectName": "CricketScoreCardProject_e9b82ab8"
+        },
+        {
+            "type": "java",
             "name": "TestConnection",
             "request": "launch",
             "mainClass": "backend.TestConnection",

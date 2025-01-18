@@ -65,6 +65,20 @@ public class DataManager {
                return teams;
            }
            
+        public String getTeamName(int id) {
+            String query = "SELECT name FROM teams WHERE id = ?";
+            try (Connection connection = DatabaseConnection.getConnection();
+                 PreparedStatement stmt = connection.prepareStatement(query)) {
+                stmt.setInt(1, id);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    return rs.getString("name");
+                }
+            } catch (Exception e) {
+                logger.severe("Error retrieving team name by ID: " + e.getMessage());
+            }
+            return null;
+        }
 
           public void deleteTeam(int teamId) {
                String query = "DELETE FROM teams WHERE id = ?";
@@ -185,6 +199,40 @@ public class DataManager {
                                             player.getRunsConceded() != 0)
                           .collect(Collectors.toList());
         }
+
+    public List<Player> getTopPerformers(String role, int limit) {
+        String query;
+        if (role.equalsIgnoreCase("batsman")) {
+            query = "SELECT name, runsScored, ballsFaced FROM players WHERE role = ? ORDER BY runsScored DESC LIMIT ?";
+        } else if (role.equalsIgnoreCase("bowler")) {
+            query = "SELECT name, wickets, oversBowled FROM players WHERE role = ? ORDER BY wickets DESC LIMIT ?";
+        } else {
+            throw new IllegalArgumentException("Invalid role. Only 'batsman' and 'bowler' are allowed.");
+        }
+
+        List<Player> players = new ArrayList<>();
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, role);
+            stmt.setInt(2, limit);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Player player = new Player();
+                player.setName(rs.getString("name"));
+                if (role.equalsIgnoreCase("batsman")) {
+                    player.setRunsScored(rs.getInt("runsScored"));
+                    player.setBallsFaced(rs.getInt("ballsFaced"));
+                } else if (role.equalsIgnoreCase("bowler")) {
+                    player.setWickets(rs.getInt("wickets"));
+                    player.setOversBowled(rs.getDouble("oversBowled"));
+                }
+                players.add(player);
+            }
+        } catch (Exception e) {
+            logger.severe("Error retrieving top performers: " + e.getMessage());
+        }
+        return players;
+    }
 
            public void updatePlayerBattingStats(Player player) {
             String query = "UPDATE players SET runsScored = ?, ballsFaced = ?, fours = ?, sixes = ? WHERE id = ?";
@@ -350,29 +398,6 @@ public class DataManager {
             e.printStackTrace();
         }
         return matches;
-    }
-
-    public List<Player> getTopPerformers(String role, int limit) {
-        String query = "SELECT * FROM players WHERE role = ? ORDER BY runsScored DESC LIMIT ?";
-        List<Player> players = new ArrayList<>();
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, role);
-            stmt.setInt(2, limit);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                Player player = new Player();
-                player.setId(rs.getInt("id"));
-                player.setName(rs.getString("name"));
-                player.setRole(rs.getString("role"));
-                player.setRunsScored(rs.getInt("runsScored"));
-                player.setWickets(rs.getInt("wickets"));
-                players.add(player);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return players;
     }
 
     public Match getOngoingMatch() {
@@ -549,6 +574,40 @@ public class DataManager {
         }
     }
 
+    public void saveTeamScore(int teamId, int runs, int wickets, double overs) {
+        String query = "INSERT INTO team_scores (team_id, runs, wickets, overs) VALUES (?, ?, ?, ?) "
+                     + "ON DUPLICATE KEY UPDATE runs = VALUES(runs), wickets = VALUES(wickets), overs = VALUES(overs)";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, teamId);
+            stmt.setInt(2, runs);
+            stmt.setInt(3, wickets);
+            stmt.setDouble(4, overs);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Method to get team score
+    public String getTeamScore(int teamId) {
+        String query = "SELECT runs, wickets, overs FROM team_scores WHERE team_id = ?";
+        String score = "0/0 (0.0)";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, teamId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                int runs = rs.getInt("runs");
+                int wickets = rs.getInt("wickets");
+                double overs = rs.getDouble("overs");
+                score = runs + "/" + wickets + " (" + overs + ")";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return score;
+    }
 
     public void saveMatchData(Match match) {
         String query = "UPDATE matches SET team1_id = ?, team2_id = ?, toss_winner = ?, choice = ?, status = ?, total_runs = ?, total_wickets = ?, total_overs = ? WHERE id = ?";
@@ -621,7 +680,6 @@ public class DataManager {
     try (Connection connection = DatabaseConnection.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(query)) {
         int rowsUpdated = preparedStatement.executeUpdate();
-        System.out.println(rowsUpdated + " player records cleared.");
     } catch (Exception e) {
         e.printStackTrace();
         System.out.println("Error clearing player stats: " + e.getMessage());
