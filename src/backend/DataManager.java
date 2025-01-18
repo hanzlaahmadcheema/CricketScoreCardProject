@@ -164,7 +164,7 @@ public class DataManager {
         
         public List<Player> getAllPlayers() {
             List<Player> players = new ArrayList<>();
-            String query = "SELECT * FROM players"; // Modify this based on your table schema
+            String query = "SELECT * FROM players"; 
             
             try (Connection connection = DatabaseConnection.getConnection();
                  Statement statement = connection.createStatement();
@@ -180,7 +180,7 @@ public class DataManager {
                     player.setRunsConceded(resultSet.getInt("runsConceded"));
                     player.setWickets(resultSet.getInt("wickets"));
                     player.setOversBowled(resultSet.getDouble("oversBowled"));
-                    // Populate any other fields as needed
+                    
                     players.add(player);
                 }
             } catch (Exception e) {
@@ -589,7 +589,7 @@ public class DataManager {
         }
     }
 
-    // Method to get team score
+    
     public String getTeamScore(int teamId) {
         String query = "SELECT runs, wickets, overs FROM team_scores WHERE team_id = ?";
         String score = "0/0 (0.0)";
@@ -675,7 +675,7 @@ public class DataManager {
             + "economy = 0, "
             + "runsScored = 0, "
             + "runsConceded = 0, "
-            + "created_at = NULL"; // Reset created_at to NULL or a default timestamp if necessary
+            + "created_at = NULL"; 
 
     try (Connection connection = DatabaseConnection.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(query)) {
