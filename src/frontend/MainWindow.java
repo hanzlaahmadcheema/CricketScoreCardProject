@@ -155,8 +155,6 @@ public class MainWindow extends JFrame {
         registerScreen("Scorecard", new ScoreCard(backgroundImage));
         registerScreen("Player Statistics", new PlayerStats(backgroundImage));
         registerScreen("Match Summary", new MatchSummary(backgroundImage));
-        registerScreen("Leaderboard", new Leaderboard(backgroundImage));
-        registerScreen("Commentary", new CommentaryPanel(backgroundImage));
 
         switchToScreen("Home");
     }

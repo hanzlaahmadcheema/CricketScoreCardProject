@@ -1,1 +1,1 @@
-ADD LABEL FOR a player is out/not-out.
+Done

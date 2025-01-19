@@ -51,7 +51,7 @@ public class ScoreCard extends BackgroundPanel {
     private void setupTopPanel() {
         JPanel topPanel = new JPanel(new GridLayout(1, 5, 10, 10));
 
-        topPanel.setPreferredSize(new Dimension(topPanel.getPreferredSize().width, 100)); // Increase height to 100        topPanel.setBackground(backgroundColor);
+        topPanel.setPreferredSize(new Dimension(topPanel.getPreferredSize().width, 100)); 
 
         topPanel.setBackground(backgroundColor);
 

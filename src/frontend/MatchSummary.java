@@ -94,7 +94,7 @@ public class MatchSummary extends BackgroundPanel {
 
         add(summaryPanel, BorderLayout.CENTER);
 
-        // Add refresh button
+        
         JButton refreshButton = new JButton("↻");
         refreshButton.setFont(new Font("Calibri", Font.BOLD, 20));
         refreshButton.setForeground(foregroundColor);
@@ -110,8 +110,8 @@ public class MatchSummary extends BackgroundPanel {
     }
 
     public void updateTotalScores() {
-        String team1Score = dataManager.getTeamScore(1); // Fetch score for team 1 from database
-        String team2Score = dataManager.getTeamScore(2); // Fetch score for team 2 from database
+        String team1Score = dataManager.getTeamScore(1); 
+        String team2Score = dataManager.getTeamScore(2); 
 
         team1ScoreLabel.setText(dataManager.getTeamName(1)+": " + team1Score);
         team2ScoreLabel.setText(dataManager.getTeamName(2)+": " + team2Score);

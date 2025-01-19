@@ -15,18 +15,6 @@
 15. add maximum validiations
 16. add a feature to save and load match data
 17. all data will be saved in database
-18. Files 
-        |--backend
-        |       |
-        |       |DataManger.java(for database)
-        |       |--Match.java
-        |       |--Team.java
-        |       |--Player.java
-        |       |-- add if you need more
-        |
-        |
-        |--frontend
-        |       |
-        |       |--ScoreCard.java
+
 
 --------------------------------------------------------------------------------------------------------

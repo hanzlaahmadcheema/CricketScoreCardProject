@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 17, 2025 at 07:45 AM
+-- Generation Time: Jan 19, 2025 at 08:17 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,19 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `cricket_score`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `leaderboard`
---
-
-CREATE TABLE `leaderboard` (
-  `id` int(11) NOT NULL,
-  `player_id` int(11) NOT NULL,
-  `total_runs` int(11) DEFAULT 0,
-  `total_wickets` int(11) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -62,7 +49,7 @@ CREATE TABLE `matches` (
 --
 
 INSERT INTO `matches` (`id`, `team1_id`, `team2_id`, `current_over`, `runs`, `wickets`, `overs`, `balls_bowled`, `status`, `toss_winner`, `choice`, `total_runs`, `total_wickets`, `total_overs`) VALUES
-(1, 1, 2, 0, 0, 0, 0, 0, 'Ongoing', 'aaa', 'Bat', 53, 0, 3);
+(1, 1, 2, 0, 0, 0, 0, 0, 'Ongoing', 'aaa', 'Bat', 38, 0, 1.3);
 
 -- --------------------------------------------------------
 
@@ -108,28 +95,28 @@ CREATE TABLE `players` (
 --
 
 INSERT INTO `players` (`id`, `team_id`, `name`, `role`, `wickets`, `ballsFaced`, `oversBowled`, `created_at`, `fours`, `sixes`, `maidens`, `is_out`, `ballsBowled`, `economy`, `runsScored`, `runsConceded`) VALUES
-(1, 1, 'hasim', 'Batsman', 0, 0, 0, '2025-01-16 18:38:34', 0, 0, 0, 0, 0, 0, 0, 0),
-(2, 1, 'tYYAB', 'Batsman', 0, 0, 0, '2025-01-16 18:38:34', 0, 0, 0, 0, 0, 0, 0, 0),
-(3, 1, 'HANZALA', 'Batsman', 0, 0, 0, '2025-01-16 18:38:34', 0, 0, 0, 0, 0, 0, 0, 0),
-(4, 1, 'MUBASHIR', 'Bowler', 0, 0, 0, '2025-01-16 18:38:34', 0, 0, 0, 0, 0, 0, 0, 0),
-(5, 1, 'ROMAN', 'All-Rounder', 0, 0, 0, '2025-01-16 18:38:34', 0, 0, 0, 0, 0, 0, 0, 0),
-(6, 1, 'BILAWAL', 'Bowler', 0, 0, 0, '2025-01-16 18:38:34', 0, 0, 0, 0, 0, 0, 0, 0),
-(7, 1, 'aa', 'All-Rounder', 0, 0, 0, '2025-01-16 18:38:34', 0, 0, 0, 0, 0, 0, 0, 0),
-(8, 1, 'BABAR', 'Bowler', 0, 0, 0, '2025-01-16 18:38:34', 0, 0, 0, 0, 0, 0, 0, 0),
-(9, 1, 'IRFAN', 'Batsman', 0, 0, 0, '2025-01-16 18:38:34', 0, 0, 0, 0, 0, 0, 0, 0),
-(10, 1, 'ASLAM', 'Bowler', 0, 0, 1, '2025-01-16 18:38:34', 0, 0, 0, 0, 6, 0, 0, 18),
-(11, 1, 'AHMAD', 'Bowler', 0, 0, 1, '2025-01-16 18:38:34', 0, 0, 0, 0, 11, 0, 0, 32),
-(12, 2, 'KASIM', 'Batsman', 0, 9, 0, '2025-01-16 18:38:34', 1, 0, 0, 0, 0, 0, 25, 0),
-(13, 2, 'QASIM', 'Bowler', 0, 8, 0, '2025-01-16 18:38:34', 1, 1, 0, 0, 0, 0, 25, 0),
-(14, 2, 'CASIM', 'Batsman', 0, 0, 0, '2025-01-16 18:38:34', 0, 0, 0, 0, 0, 0, 0, 0),
-(15, 2, 'KACIM', 'All-Rounder', 0, 0, 0, '2025-01-16 18:38:34', 0, 0, 0, 0, 0, 0, 0, 0),
-(16, 2, 'CACIM', 'Bowler', 0, 0, 0, '2025-01-16 18:38:34', 0, 0, 0, 0, 0, 0, 0, 0),
-(17, 2, 'QACIM', 'All-Rounder', 0, 0, 0, '2025-01-16 18:38:34', 0, 0, 0, 0, 0, 0, 0, 0),
-(18, 2, 'QAIS', 'Batsman', 0, 0, 0, '2025-01-16 18:38:34', 0, 0, 0, 0, 0, 0, 0, 0),
-(19, 2, 'aaa', 'All-Rounder', 0, 0, 0, '2025-01-16 18:38:34', 0, 0, 0, 0, 0, 0, 0, 0),
-(20, 2, 'KAIS', 'Batsman', 0, 0, 0, '2025-01-16 18:38:34', 0, 0, 0, 0, 0, 0, 0, 0),
-(21, 2, 'CHUU', 'Batsman', 0, 0, 0, '2025-01-16 18:38:34', 0, 0, 0, 0, 0, 0, 0, 0),
-(22, 2, 'CHII', 'Bowler', 0, 0, 0, '2025-01-16 18:38:34', 0, 0, 0, 0, 0, 0, 0, 0);
+(1, 1, 'hasim', 'Batsman', 0, 0, 0, '2025-01-17 17:21:26', 0, 0, 0, 0, 0, 0, 0, 0),
+(2, 1, 'tYYAB', 'Batsman', 0, 0, 0, '2025-01-17 17:21:26', 0, 0, 0, 0, 0, 0, 0, 0),
+(3, 1, 'HANZALA', 'Batsman', 0, 0, 0, '2025-01-17 17:21:26', 0, 0, 0, 0, 0, 0, 0, 0),
+(4, 1, 'MUBASHIR', 'Bowler', 0, 0, 0, '2025-01-17 17:21:26', 0, 0, 0, 0, 0, 0, 0, 0),
+(5, 1, 'ROMAN', 'All-Rounder', 0, 0, 0, '2025-01-17 17:21:26', 0, 0, 0, 0, 0, 0, 0, 0),
+(6, 1, 'BILAWAL', 'Bowler', 0, 0, 0, '2025-01-17 17:21:26', 0, 0, 0, 0, 0, 0, 0, 0),
+(7, 1, 'aa', 'All-Rounder', 0, 0, 0, '2025-01-17 17:21:26', 0, 0, 0, 0, 0, 0, 0, 0),
+(8, 1, 'BABAR', 'Bowler', 0, 0, 0, '2025-01-17 17:21:26', 0, 0, 0, 0, 0, 0, 0, 0),
+(9, 1, 'IRFAN', 'Batsman', 0, 0, 0, '2025-01-17 17:21:26', 0, 0, 0, 0, 0, 0, 0, 0),
+(10, 1, 'ASLAM', 'Bowler', 0, 0, 0, '2025-01-17 17:21:26', 0, 0, 0, 0, 3, 0, 0, 18),
+(11, 1, 'AHMAD', 'Bowler', 0, 0, 0, '2025-01-17 17:21:26', 0, 0, 0, 0, 6, 0, 0, 20),
+(12, 2, 'KASIM', 'Batsman', 0, 2, 0, '2025-01-17 17:21:26', 0, 0, 0, 0, 0, 0, 6, 0),
+(13, 2, 'QASIM', 'Bowler', 0, 7, 0, '2025-01-17 17:21:26', 2, 3, 0, 0, 0, 0, 32, 0),
+(14, 2, 'CASIM', 'Batsman', 0, 0, 0, '2025-01-17 17:21:26', 0, 0, 0, 0, 0, 0, 0, 0),
+(15, 2, 'KACIM', 'All-Rounder', 0, 0, 0, '2025-01-17 17:21:26', 0, 0, 0, 0, 0, 0, 0, 0),
+(16, 2, 'CACIM', 'Bowler', 0, 0, 0, '2025-01-17 17:21:26', 0, 0, 0, 0, 0, 0, 0, 0),
+(17, 2, 'QACIM', 'All-Rounder', 0, 0, 0, '2025-01-17 17:21:26', 0, 0, 0, 0, 0, 0, 0, 0),
+(18, 2, 'QAIS', 'Batsman', 0, 0, 0, '2025-01-17 17:21:26', 0, 0, 0, 0, 0, 0, 0, 0),
+(19, 2, 'aaa', 'All-Rounder', 0, 0, 0, '2025-01-17 17:21:26', 0, 0, 0, 0, 0, 0, 0, 0),
+(20, 2, 'KAIS', 'Batsman', 0, 0, 0, '2025-01-17 17:21:26', 0, 0, 0, 0, 0, 0, 0, 0),
+(21, 2, 'CHUU', 'Batsman', 0, 0, 0, '2025-01-17 17:21:26', 0, 0, 0, 0, 0, 0, 0, 0),
+(22, 2, 'CHII', 'Bowler', 0, 0, 0, '2025-01-17 17:21:26', 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -151,16 +138,30 @@ INSERT INTO `teams` (`id`, `name`, `created_at`) VALUES
 (1, 'LLP', '2025-01-15 07:26:51'),
 (2, 'aaa', '2025-01-15 07:26:51');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `team_scores`
+--
+
+CREATE TABLE `team_scores` (
+  `team_id` int(11) NOT NULL,
+  `runs` int(11) NOT NULL,
+  `wickets` int(11) NOT NULL,
+  `overs` decimal(4,1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `team_scores`
+--
+
+INSERT INTO `team_scores` (`team_id`, `runs`, `wickets`, `overs`) VALUES
+(1, 0, 0, 0.0),
+(2, 38, 0, 1.3);
+
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `leaderboard`
---
-ALTER TABLE `leaderboard`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `player_id` (`player_id`);
 
 --
 -- Indexes for table `matches`
@@ -192,14 +193,14 @@ ALTER TABLE `teams`
   ADD UNIQUE KEY `name` (`name`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- Indexes for table `team_scores`
 --
+ALTER TABLE `team_scores`
+  ADD PRIMARY KEY (`team_id`);
 
 --
--- AUTO_INCREMENT for table `leaderboard`
+-- AUTO_INCREMENT for dumped tables
 --
-ALTER TABLE `leaderboard`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `matches`
@@ -222,12 +223,6 @@ ALTER TABLE `teams`
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `leaderboard`
---
-ALTER TABLE `leaderboard`
-  ADD CONSTRAINT `leaderboard_ibfk_1` FOREIGN KEY (`player_id`) REFERENCES `players` (`id`);
 
 --
 -- Constraints for table `matches`
