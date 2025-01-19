@@ -63,7 +63,6 @@ public class ScoreCard extends BackgroundPanel {
         projectedScoreLabel = createLabel("Projected Score: 0", Font.BOLD, 18);
 
         topPanel.add(inningLabel);
-        topPanel.add(currentTeamLabel);
         topPanel.add(scoreLabel);
         topPanel.add(runRateLabel);
         topPanel.add(projectedScoreLabel);
