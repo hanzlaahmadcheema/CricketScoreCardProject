@@ -21,16 +21,6 @@ An advanced **Cricket Score Card System** built in **Java** using **Object-Orien
 ## 🗂️ Project Structure  
 
 ### Root Directory  
-- **`.gitignore`**: Specifies intentionally untracked files to ignore.  
-- **`README.md`**: Documentation for the project.  
-
-### `.vscode/`  
-- **`launch.json`**: Configurations for running and debugging the project.  
-- **`settings.json`**: Workspace settings for the project.  
-
-### `bin/`  
-- **`frontend/Main.class`**: Compiled Java bytecode for the main frontend entry point.  
-
 ### `database/`  
 - **`cricket_score.sql`**: Database dump file to set up the MySQL database.  
 
