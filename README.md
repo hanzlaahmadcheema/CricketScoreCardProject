@@ -63,5 +63,5 @@ An advanced **Cricket Score Card System** built in **Java** using **Object-Orien
 
 1. Clone the repository:  
    ```bash
-   git clone https://github.com/your-username/cricket-score-card.git
-   cd cricket-score-card
+   git clone https://github.com/hanzlaahmadcheema/CricketScoreCardProject.git
+   cd CricketScoreCardProject
